@@ -44,57 +44,57 @@ namespace WarehouseLibrary
         }
 
         /// <summary>
-        /// Take array of object "Warehouse", and add one new object of class;
+        /// Take object "Warehouse" and add info on it;
         /// </summary>
-        /// <param name="allWarehouses"></param>
-        /// <returns>Array of object with one new object;</returns>
-        public Warehouse[] addInfo(Warehouse[] allWarehouses)
+        /// <param name="myWarehouses"></param>
+        /// <returns>Object with info;</returns>
+        public Warehouse addInfo(Warehouse myWarehouse)
         {
-            Array.Resize(ref allWarehouses, allWarehouses.Length + 1);
-            allWarehouses[allWarehouses.Length] = new Warehouse;
-            return allWarehouses;
+            Console.WriteLine("Enter title of your warehouse");
+            myWarehouse.Title = Console.ReadLine();
+            Console.WriteLine("Enter address of your warehouse");
+            myWarehouse.Address = Console.ReadLine();
+            Console.WriteLine("Enter contact number of your warehouse");
+            myWarehouse.ContactNumber = Console.ReadLine();
+            return myWarehouse;
         }
 
         /// <summary>
-        /// Display all object in array;
+        /// Display object info;
         /// </summary>
-        /// <param name="allWarehouses">Array of objects Warehouses</param>
-        public void displayInfo(Warehouse[] allWarehouses)
+        /// <param name="myWarehouse">Array of objects Warehouses</param>
+        public void displayInfo(Warehouse myWarehouse)
         {
-            for (int i = 0; i < allWarehouses.Length; i++)
-            {
-                Console.WriteLine($"Number of index:{i}");
-                Console.WriteLine(allWarehouses[i].Title);
-                Console.WriteLine(allWarehouses[i].Address);
-                Console.WriteLine(allWarehouses[i].ContactNumber);
-                Console.WriteLine();
-            }
+            Console.WriteLine(myWarehouse.Title);
+            Console.WriteLine(myWarehouse.Address);
+            Console.WriteLine(myWarehouse.ContactNumber);
+            Console.WriteLine();
+
         }
 
         /// <summary>
-        /// Change information of object in array of objects.
+        /// Change information of object.
         /// </summary>
-        /// <param name="allWarehouses">Array of objects Warehouses</param>
-        /// <param name="indexOfObject">Number of object in array, that you want to change</param>
+        /// <param name="myWarehouse">Array of objects Warehouses</param>
         /// <param name="lineForChanging">1.Title, 2.Address, 3. ContactNumber,</param>
-        /// <returns>Array of object with changed information.</returns>
-        public Warehouse updateInfo(Warehouse[] allWarehouses, int indexOfObject, int lineForChanging)
+        /// <returns>object with changed information.</returns>
+        public Warehouse updateInfo(Warehouse myWarehouse, int lineForChanging)
         {
             switch (lineForChanging)
             {
                 case 1:
                     {
-                        allWarehouses[indexOfObject].Title = Console.ReadLine();
+                        myWarehouse.Title = Console.ReadLine();
                         break;
                     }
                 case 2:
                     {
-                        allWarehouses[indexOfObject].Address = Console.ReadLine();
+                        myWarehouse.Address = Console.ReadLine();
                         break;
                     }
                 case 3:
                     {
-                        allWarehouses[indexOfObject].ContactNumber = Console.ReadLine();
+                        myWarehouse.ContactNumber = Console.ReadLine();
                         break;
                     }
                 default:
@@ -103,7 +103,7 @@ namespace WarehouseLibrary
                         break;
                     }
             }
-            return allWarehouses;
+            return myWarehouse;
         }
-    } 
+    }
 }
