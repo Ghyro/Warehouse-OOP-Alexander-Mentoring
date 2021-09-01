@@ -48,7 +48,7 @@ namespace WarehouseLibrary
         /// </summary>
         /// <param name="myWarehouses"></param>
         /// <returns>Object with info;</returns>
-        public Warehouse addInfo(Warehouse myWarehouse)
+        public Warehouse addInfo(Warehouse myWarehouse) // изначально я хотел метод который принимает массив объектов и добавляет в него объект.
         {
             Console.WriteLine("Enter title of your warehouse");
             myWarehouse.Title = Console.ReadLine();
@@ -84,16 +84,19 @@ namespace WarehouseLibrary
             {
                 case 1:
                     {
+                        Console.Write("You are updating title of warehouse, enter info");
                         myWarehouse.Title = Console.ReadLine();
                         break;
                     }
                 case 2:
                     {
+                        Console.Write("You are updating address of warehouse, enter info");
                         myWarehouse.Address = Console.ReadLine();
                         break;
                     }
                 case 3:
                     {
+                        Console.Write("You are updating conteact number of warehouse, enter info");
                         myWarehouse.ContactNumber = Console.ReadLine();
                         break;
                     }
