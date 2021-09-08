@@ -11,7 +11,6 @@ namespace WarehouseApp
             WarehouseService warehouseService = new WarehouseService();
             Employee[] employees = new Employee[1];
             int freeVacation = myWarehouse.Vacations - (employees.Length - 1);
-            //Console.WriteLine("Add info(create an object of warehouse");
             while (true)
             {
                 Console.WriteLine("1. Display info(title, address, contact number");
@@ -62,10 +61,7 @@ namespace WarehouseApp
                         {
                             Console.WriteLine("List of employees:");
                             Console.WriteLine($"name|age|Job position|home address|contact number|education");
-                            foreach (Employee employee in employees)
-                            {
-                                Console.WriteLine($"{employee.Name} {employee.Surname}|{employee.Age}|{employee.Job}|{employee.HomeAddress}|{employee.ContactNumber}|{employee.Education}");
-                            }
+                            KeepEmployeeList(employees);
                             break;
                         }
                     case 6://add employee
@@ -77,11 +73,11 @@ namespace WarehouseApp
                             string Surname = Console.ReadLine();
                             Console.WriteLine("Enter you age");
                             int Age = int.Parse(Console.ReadLine());
-                            EnumVacation Job=0;
+                            EnumVacation Job = 0;
                             Console.WriteLine("Select your job position:\n1.accountant\n2.cleaner\n3.director\n4.manager\n5.storekeeper");
                             int selection = int.Parse(Console.ReadLine());
                             switch (selection)
-                            {                                   
+                            {
                                 case 1:
                                     {
                                         Job = EnumVacation.accountant;
@@ -117,25 +113,38 @@ namespace WarehouseApp
                             string ContactNumber = Console.ReadLine();
                             Console.WriteLine("Enter you education");
                             string Education = Console.ReadLine();
-                            employees[employees.Length - 1] = new Employee(Name,Surname,Age,Job,HomeAddress,ContactNumber,Education);
+                            employees[employees.Length - 1] = new Employee(Name, Surname, Age, Job, HomeAddress, ContactNumber, Education);
                             break;
                         }
                     case 7://Search the employee by Name and Surname
                         {
+                            Console.WriteLine("Enter searcing name");
+                            string searcingName = Console.ReadLine();
+                            Console.WriteLine("Enter searcing surname");
+                            string searchingSurname = Console.ReadLine();
+                            KeepEmployeeList(warehouseService.SearchEmployee(employees, searcingName, searchingSurname));
                             break;
                         }
                     case 8://Quit employee(remove)
                         {
-
+                            Console.WriteLine("Enter number of employee from Employees list: ");
+                            int numOfEmployeeForQuit = int.Parse(Console.ReadLine());
+                            warehouseService.QuitEmployee(employees, numOfEmployeeForQuit);
                             break;
                         }
-
-
                     default://excaption
-                        Console.WriteLine("Wrong data!");
+                        Console.WriteLine("Wrong selection!");
                         break;
+                }
+                void KeepEmployeeList(Employee[] employees) //перенёс в програм, т.к. получается ошибка от сюда. почему?
+                {
+                    foreach (Employee employee in employees)
+                    {
+                        Console.WriteLine($"{0}. {employee.Name} {employee.Surname}|{employee.Age}|{employee.Job}|{employee.HomeAddress}|{employee.ContactNumber}|{employee.Education}",+1);
+                    }
                 }
             }
         }
     }
 }
+

@@ -89,29 +89,44 @@ namespace WarehouseLibrary
         {
             myWarehouse = null;
         }
-        
-        public Employee SearchEmployee(Employee[] employee, string searchingName, string searchingSurname)
+
+        public Employee[] SearchEmployee(Employee[] employee, string searchingName, string searchingSurname)
         {
             Employee[] resultList = new Employee[1];
             int counter = 0;
             for (int i = 0; i < employee.Length; i++)
             {
-                if (employee[i].Name==searchingName&&employee[i].Surname==searchingSurname)
+                if (employee[i].Name == searchingName && employee[i].Surname == searchingSurname)
                 {
                     resultList[counter].Name = employee[i].Name;
-                    resultList[counter].Surname=employee[i].Surname;
-
-
-
-
+                    resultList[counter].Surname = employee[i].Surname;
+                    resultList[counter].Age = employee[i].Age;
+                    resultList[counter].Job = employee[i].Job;
+                    resultList[counter].HomeAddress = employee[i].HomeAddress;
+                    resultList[counter].ContactNumber = employee[i].ContactNumber;
+                    resultList[counter].Education = employee[i].Education;
+                    Array.Resize(ref resultList, resultList.Length + 1);
+                    counter++;
                 }
             }
-
             return resultList;
         }
-        public void QuitEmployee(Employee[] employee)
+        /*public void KeepEmployeeList(Employee[] employees) //перенёс в програм, т.к. получается ошибка от сюда. почему?
         {
-            employee = null;
+            foreach (Employee employee in employees)
+            {
+                Console.WriteLine($"{employee.Name} {employee.Surname}|{employee.Age}|{employee.Job}|{employee.HomeAddress}|{employee.ContactNumber}|{employee.Education}");
+            }
+        }*/
+
+        public void QuitEmployee(Employee[] employee, int numEmployeeInList)
+        {
+            employee[numEmployeeInList - 1] = null;
+            for (int i = 0; i < employee.Length; i++)
+            {
+                employee[numEmployeeInList - 1] = employee[numEmployeeInList];
+            }
+            Array.Resize(ref employee, employee.Length - 1);
         }
     }
 }
