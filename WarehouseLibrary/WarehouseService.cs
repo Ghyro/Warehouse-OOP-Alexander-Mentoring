@@ -8,40 +8,6 @@ namespace WarehouseLibrary
 {
     public class WarehouseService
     {
-        /*/// <summary>
-        /// Take object "Warehouse" and add info on it;
-        /// </summary>
-        /// <param name="myWarehouses"></param>
-        /// <returns>Object with info;</returns>
-        public Warehouse AddInfo(Warehouse myWarehouse) // изначально я хотел метод который принимает массив объектов и добавляет в него объект.
-        {
-            Console.WriteLine("Enter title of your warehouse");
-            myWarehouse.Title = Console.ReadLine();
-            Console.WriteLine("Enter address of your warehouse");
-            myWarehouse.Address = Console.ReadLine();
-            Console.WriteLine("Enter contact number of your warehouse");
-            myWarehouse.ContactNumber = Console.ReadLine();
-            Console.WriteLine("Enter number of vacation");
-            myWarehouse.Vacations = int.Parse(Console.ReadLine());
-            return myWarehouse;
-        }*/
-
-        /// <summary>
-        /// Display object info;
-        /// </summary>
-        /// <param name="myWarehouse">Array of objects Warehouses</param>
-        public void DisplayInfo(Warehouse myWarehouse)
-        {
-            Console.WriteLine(myWarehouse.Title);
-            Console.WriteLine(myWarehouse.Address);
-            Console.WriteLine(myWarehouse.ContactNumber);
-            Console.WriteLine($"number of employees{myWarehouse.Employees.Length}");
-            int freeVacationgs = myWarehouse.Vacations - myWarehouse.Employees.Length;
-            Console.WriteLine($"number of free vacation{freeVacationgs}");
-
-            Console.WriteLine();
-        }
-
         /// <summary>
         /// Change information of object.
         /// </summary>
@@ -54,25 +20,25 @@ namespace WarehouseLibrary
             {
                 case 1:
                     {
-                        Console.Write("You are updating title of warehouse, enter info");
+                        Console.WriteLine("You are updating title of warehouse, enter info");
                         myWarehouse.Title = Console.ReadLine();
                         break;
                     }
                 case 2:
                     {
-                        Console.Write("You are updating address of warehouse, enter info");
+                        Console.WriteLine("You are updating address of warehouse, enter info");
                         myWarehouse.Address = Console.ReadLine();
                         break;
                     }
                 case 3:
                     {
-                        Console.Write("You are updating conteact number of warehouse, enter info");
+                        Console.WriteLine("You are updating conteact number of warehouse, enter info");
                         myWarehouse.ContactNumber = Console.ReadLine();
                         break;
                     }
                 case 4:
                     {
-                        Console.Write("You are updating vacation of the warehouse, enter info");
+                        Console.WriteLine("You are updating vacation of the warehouse, enter info");
                         myWarehouse.Vacations = int.Parse(Console.ReadLine());
                         break;
                     }
@@ -85,48 +51,57 @@ namespace WarehouseLibrary
             return myWarehouse;
         }
 
-        public void CleareInfo(Warehouse myWarehouse)// возможно реф параметр
+        /// <summary>
+        /// set params to null
+        /// </summary>
+        /// <param name="myWarehouse"></param>
+        public void CleareInfo(Warehouse myWarehouse)
         {
             myWarehouse = null;
         }
 
+        /// <summary>
+        /// search obj by name/surname
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <param name="searchingName"></param>
+        /// <param name="searchingSurname"></param>
+        /// <returns>array of obj </returns>
         public Employee[] SearchEmployee(Employee[] employee, string searchingName, string searchingSurname)
         {
-            Employee[] resultList = new Employee[1];
+            Employee[] resultList= new Employee[1];
             int counter = 0;
-            for (int i = 0; i < employee.Length; i++)
+            for (int i = 0; i < employee.Length-1; i++)
             {
                 if (employee[i].Name == searchingName && employee[i].Surname == searchingSurname)
                 {
-                    resultList[counter].Name = employee[i].Name;
-                    resultList[counter].Surname = employee[i].Surname;
-                    resultList[counter].Age = employee[i].Age;
-                    resultList[counter].Job = employee[i].Job;
-                    resultList[counter].HomeAddress = employee[i].HomeAddress;
-                    resultList[counter].ContactNumber = employee[i].ContactNumber;
-                    resultList[counter].Education = employee[i].Education;
+                    resultList[counter] = new Employee(employee[i].Name, employee[i].Surname, employee[i].Age, employee[i].Job, employee[i].HomeAddress, employee[i].ContactNumber, employee[i].Education);
                     Array.Resize(ref resultList, resultList.Length + 1);
                     counter++;
                 }
             }
             return resultList;
         }
-        /*public void KeepEmployeeList(Employee[] employees) //перенёс в програм, т.к. получается ошибка от сюда. почему?
-        {
-            foreach (Employee employee in employees)
-            {
-                Console.WriteLine($"{employee.Name} {employee.Surname}|{employee.Age}|{employee.Job}|{employee.HomeAddress}|{employee.ContactNumber}|{employee.Education}");
-            }
-        }*/
 
-        public void QuitEmployee(Employee[] employee, int numEmployeeInList)
+        /// <summary>
+        /// set quit element to null and resize(delete element)
+        /// </summary>
+        /// <param name="myWarehouse"></param>
+        /// <param name="employee"></param>
+        /// <param name="numEmployeeInList"></param>
+        public void QuitEmployee(Warehouse myWarehouse, Employee[] employee, int numEmployeeInList)//можно ли обратьться к переменной склада "NumOfEmployed" без добавления склада в параметр? 
         {
-            employee[numEmployeeInList - 1] = null;
-            for (int i = 0; i < employee.Length; i++)
+
+            if (myWarehouse.NumOfEmployed > 0)
             {
-                employee[numEmployeeInList - 1] = employee[numEmployeeInList];
+                myWarehouse.NumOfEmployed--;
+                employee[numEmployeeInList - 1] = null;
+                for (int i = 0; i < employee.Length; i++)
+                {
+                    employee[numEmployeeInList - 1] = employee[numEmployeeInList];
+                }
+                Array.Resize(ref employee, employee.Length - 1);
             }
-            Array.Resize(ref employee, employee.Length - 1);
         }
     }
 }
