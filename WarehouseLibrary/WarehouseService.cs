@@ -39,7 +39,8 @@ namespace WarehouseLibrary
                 case 4:
                     {
                         Console.WriteLine("You are updating vacation of the warehouse, enter info");
-                        myWarehouse.Vacations = int.Parse(Console.ReadLine());
+                        int i;
+                        myWarehouse.UpdateVacation(int.Parse(Console.ReadLine()));
                         break;
                     }
                 default:
