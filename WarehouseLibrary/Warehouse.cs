@@ -47,7 +47,14 @@ namespace WarehouseLibrary
         public int Vacations
         {
             get { return vacations; }
-            set { vacations = value; }
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                vacations = value;
+            }
         }
 
         private Employee[] employees;
@@ -59,14 +66,32 @@ namespace WarehouseLibrary
             }
             set
             {
+                if (employees == null)
+                {
+
+                }
                 employees = value;
             }
         }
 
+        private int numOfEmployed;
+        public int NumOfEmployed
+        {
+            get { return numOfEmployed; }
+            set { numOfEmployed = value; }
+        }
+
         public Warehouse(string Title, string Address, string ContactNumbers, int Vacations)
         {
-
+            this.Title = Title;
+            this.Address = Address;
+            //this.ContactNumbers = ContactNumbers; //почему Ошибка?
+            this.Vacations = Vacations;
         }
-            
+        public Warehouse(string Title, string Address, string ContactNumbers)
+        {
+            Vacations = 5;
+        }
+
     }
 }
