@@ -30,16 +30,16 @@ namespace WarehouseLibrary
             }
         }
 
-        private string contactNumbers;
+        private string contactNumber;
         public string ContactNumber
         {
             get
             {
-                return contactNumbers;
+                return contactNumber;
             }
             set
             {
-                contactNumbers = value;
+                contactNumber = value;
             }
         }
 
@@ -47,7 +47,7 @@ namespace WarehouseLibrary
         public int Vacations
         {
             get { return vacations; }
-            set
+            private set
             {
                 if (value < 0)
                 {
@@ -56,6 +56,7 @@ namespace WarehouseLibrary
                 vacations = value;
             }
         }
+
 
         private Employee[] employees;
         public Employee[] Employees
@@ -81,17 +82,16 @@ namespace WarehouseLibrary
             set { numOfEmployed = value; }
         }
 
-        public Warehouse(string Title, string Address, string ContactNumbers, int Vacations)
+        public Warehouse(string Title, string Address, string ContactNumber, int Vacations)
         {
             this.Title = Title;
             this.Address = Address;
-            //this.ContactNumbers = ContactNumbers; //почему Ошибка?
+            this.ContactNumber = ContactNumber;
             this.Vacations = Vacations;
         }
-        public Warehouse(string Title, string Address, string ContactNumbers)
+        public void UpdateVacation(int numVacations)
         {
-            Vacations = 5;
+            this.Vacations = numVacations;
         }
-
     }
 }
