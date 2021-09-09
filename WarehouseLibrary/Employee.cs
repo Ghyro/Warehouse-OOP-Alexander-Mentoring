@@ -59,22 +59,28 @@ namespace WarehouseLibrary
 
         public Employee(string Name, string Surname, int Age, EnumVacation Job, string HomeAddress, string ContactNumber, string Education)
         {
-            
-        }
+            this.Name = Name;
+            this.Surname = Surname;
+            this.Age = Age;
+            this.Job = Job;
+            this.HomeAddress = HomeAddress;
+            this.ContactNumber=ContactNumber;
+            this.Education = Education;
+        }//Перезаписать
         public Employee(string Surname, int Age, EnumVacation Job, string ContactNumber)
         {
             string Name = string.Empty;
             string Education = string.Empty;
-        }
+        }//Перезаписать
         public Employee(string Name, string Surname, int Age, EnumVacation Job, string ContactNumber)
         {
             string HomeAddress = string.Empty;
             string Education = string.Empty;
-        }
+        }//Перезаписать
         public Employee(string Name, string Surname, int Age, EnumVacation Job, string ContactNumber, string Education)
         {
             string HomeAddress = string.Empty;
-        }
+        }//Перезаписать
         public Employee(string Surname, EnumVacation Job, string ContactNumber)
         {
             string Name = string.Empty;
