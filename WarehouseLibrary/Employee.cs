@@ -57,35 +57,15 @@ namespace WarehouseLibrary
             set { education = value; }
         }
 
-        public Employee(string Name, string Surname, int Age, EnumVacation Job, string HomeAddress, string ContactNumber, string Education)
+        public Employee(string name, string surname, int age, EnumVacation job, string homeAddress, string contactNumber, string education)
         {
-            this.Name = Name;
-            this.Surname = Surname;
-            this.Age = Age;
-            this.Job = Job;
-            this.HomeAddress = HomeAddress;
-            this.ContactNumber=ContactNumber;
-            this.Education = Education;
-        }//Перезаписать
-        public Employee(string Surname, int Age, EnumVacation Job, string ContactNumber)
-        {
-            string Name = string.Empty;
-            string Education = string.Empty;
-        }//Перезаписать
-        public Employee(string Name, string Surname, int Age, EnumVacation Job, string ContactNumber)
-        {
-            string HomeAddress = string.Empty;
-            string Education = string.Empty;
-        }//Перезаписать
-        public Employee(string Name, string Surname, int Age, EnumVacation Job, string ContactNumber, string Education)
-        {
-            string HomeAddress = string.Empty;
-        }//Перезаписать
-        public Employee(string Surname, EnumVacation Job, string ContactNumber)
-        {
-            string Name = string.Empty;
-            string HomeAddress = string.Empty;
-            string Education = string.Empty;
+            this.Name = name;
+            this.Surname = surname;
+            this.Age = age;
+            this.Job = job;
+            this.HomeAddress = homeAddress;
+            this.ContactNumber=contactNumber;
+            this.Education = education;
         }
     }
 }
