@@ -8,10 +8,10 @@ namespace WarehouseLibrary
 {
     public enum EnumVacation
     {
-        accountant=1,
-        cleaner,
-        director,
-        manager,
-        storekeeper         
+        Accountant=1,
+        Cleaner,
+        Director,
+        Manager,
+        Storekeeper         
     }
 }
