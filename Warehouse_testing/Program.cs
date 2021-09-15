@@ -9,7 +9,7 @@ namespace WarehouseApp
         {
             Warehouse myWarehouse = new Warehouse("Store", "Belarus", "+375293628848", 5);
             WarehouseService warehouseService = new WarehouseService();
-            Employee[] employees = new Employee[1];
+            Person[] employees = new Employee[1];
             while (true)
             {
                 Console.WriteLine("\n1. Display info(title, address, contact number)");
@@ -42,10 +42,10 @@ namespace WarehouseApp
                             {
                                 Console.WriteLine($"Total vacation now: {myWarehouse.Vacations}");
                                 Console.WriteLine($"Total free vacation now: {myWarehouse.Vacations - myWarehouse.NumOfEmployed}");
-                                warehouseService.UpdateInfo(myWarehouse, numOfLine);
+                                UpdateInfo(myWarehouse, numOfLine);
                                 break;
                             }
-                            warehouseService.UpdateInfo(myWarehouse, numOfLine);
+                            UpdateInfo(myWarehouse, numOfLine);
                             break;
                         }
                     case 3://Clear all info about Warehouse(re - create Warehouse)
@@ -173,6 +173,50 @@ namespace WarehouseApp
                     Console.WriteLine($"number of free vacation: {freeVacations}");
                     Console.WriteLine();
                 }
+
+                /// <summary>
+                /// Change information of object.
+                /// </summary>
+                /// <param name="myWarehouse">Array of objects Warehouses</param>
+                /// <param name="lineForChanging">1.Title, 2.Address, 3. ContactNumber, 4.Vacation</param>
+                /// <returns>object with changed information.</returns>
+                Warehouse UpdateInfo(Warehouse myWarehouse, int lineForChanging)
+                {
+                    switch (lineForChanging)
+                    {
+                        case 1:
+                            {
+                                Console.WriteLine("You are updating title of warehouse, enter info");
+                                myWarehouse.Title = Console.ReadLine();
+                                break;
+                            }
+                        case 2:
+                            {
+                                Console.WriteLine("You are updating address of warehouse, enter info");
+                                myWarehouse.Address = Console.ReadLine();
+                                break;
+                            }
+                        case 3:
+                            {
+                                Console.WriteLine("You are updating conteact number of warehouse, enter info");
+                                myWarehouse.ContactNumber = Console.ReadLine();
+                                break;
+                            }
+                        case 4:
+                            {
+                                Console.WriteLine("You are updating vacation of the warehouse, enter info");
+                                myWarehouse.UpdateVacation(int.Parse(Console.ReadLine()));
+                                break;
+                            }
+                        default:
+                            {
+                                Console.WriteLine("Wrong line for changing");
+                                break;
+                            }
+                    }
+                    return myWarehouse;
+                }
+
             }
         }
     }

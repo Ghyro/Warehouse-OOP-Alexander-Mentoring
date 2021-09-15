@@ -9,50 +9,6 @@ namespace WarehouseLibrary
     public class WarehouseService
     {
         /// <summary>
-        /// Change information of object.
-        /// </summary>
-        /// <param name="myWarehouse">Array of objects Warehouses</param>
-        /// <param name="lineForChanging">1.Title, 2.Address, 3. ContactNumber, 4.Vacation</param>
-        /// <returns>object with changed information.</returns>
-        public Warehouse UpdateInfo(Warehouse myWarehouse, int lineForChanging)
-        {
-            switch (lineForChanging)
-            {
-                case 1:
-                    {
-                        Console.WriteLine("You are updating title of warehouse, enter info");
-                        myWarehouse.Title = Console.ReadLine();
-                        break;
-                    }
-                case 2:
-                    {
-                        Console.WriteLine("You are updating address of warehouse, enter info");
-                        myWarehouse.Address = Console.ReadLine();
-                        break;
-                    }
-                case 3:
-                    {
-                        Console.WriteLine("You are updating conteact number of warehouse, enter info");
-                        myWarehouse.ContactNumber = Console.ReadLine();
-                        break;
-                    }
-                case 4:
-                    {
-                        Console.WriteLine("You are updating vacation of the warehouse, enter info");
-                        int i;
-                        myWarehouse.UpdateVacation(int.Parse(Console.ReadLine()));
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Wrong line for changing");
-                        break;
-                    }
-            }
-            return myWarehouse;
-        }
-
-        /// <summary>
         /// set params to null
         /// </summary>
         /// <param name="myWarehouse"></param>
