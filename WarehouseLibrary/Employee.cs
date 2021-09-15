@@ -6,29 +6,8 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    public class Employee
+    public class Employee : Person
     {
-        private string name;
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        private string surname;
-        public string Surname
-        {
-            get { return surname; }
-            set { surname = value; }
-        }
-
-        private int age;
-        public int Age
-        {
-            get { return age; ; }
-            set { age = value; }
-        }
-
         private EnumVacation job;
         public EnumVacation Job
         {
@@ -43,12 +22,6 @@ namespace WarehouseLibrary
             set { homeAddress = value; }
         }
 
-        private string contactNumber;
-        public string ContactNumber
-        {
-            get { return contactNumber; }
-            set { contactNumber = value; }
-        }
 
         private string education;
         public string Education
@@ -57,15 +30,11 @@ namespace WarehouseLibrary
             set { education = value; }
         }
 
-        public Employee(string name, string surname, int age, EnumVacation job, string homeAddress, string contactNumber, string education)
+        public Employee(string name, string surname, int age, EnumVacation job, string homeAddress, string contactNumber, string education) : base(name, surname, age, contactNumber)
         {
-            this.Name = name;
-            this.Surname = surname;
-            this.Age = age;
-            this.Job = job;
-            this.HomeAddress = homeAddress;
-            this.ContactNumber=contactNumber;
-            this.Education = education;
+            Job = job;
+            HomeAddress = homeAddress;
+            Education = education;
         }
     }
 }
