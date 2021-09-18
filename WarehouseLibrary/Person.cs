@@ -36,12 +36,30 @@ namespace WarehouseLibrary
             set { contactNumber = value; }
         }
 
-        public Person(string name, string surname,int age, string contactNumber)
+
+        private string homeAddress;
+        public string HomeAddress
+        {
+            get { return homeAddress; }
+            set { homeAddress = value; }
+        }
+
+
+        private string education;
+        public string Education
+        {
+            get { return education; }
+            set { education = value; }
+        }
+
+        public Person(string name, string surname, int age, string homeAddress, string contactNumber, string education)
         {
             Name = name;
             Surname = surname;
             Age = age;
+            HomeAddress = homeAddress;
             ContactNumber = contactNumber;
+            Education = education;
         }
     }
 }
