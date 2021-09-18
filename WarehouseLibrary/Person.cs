@@ -52,6 +52,14 @@ namespace WarehouseLibrary
             set { education = value; }
         }
 
+        private Guid personID;
+        public Guid PersonID
+        {
+            get { return personID; }
+            private set { personID = value; }
+        }
+
+
         public Person(string name, string surname, int age, string homeAddress, string contactNumber, string education)
         {
             Name = name;
@@ -60,6 +68,7 @@ namespace WarehouseLibrary
             HomeAddress = homeAddress;
             ContactNumber = contactNumber;
             Education = education;
+            PersonID = Guid.NewGuid();
         }
     }
 }
