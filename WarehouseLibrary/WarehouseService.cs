@@ -26,14 +26,14 @@ namespace WarehouseLibrary
         /// <returns>array of obj </returns>
         public Employee[] SearchEmployee(Employee[] employee, string searchingName, string searchingSurname)
         {
-            Employee[] resultList= new Employee[1];
+            Employee[] resultList= new Employee[0];
             int counter = 0;
-            for (int i = 0; i < employee.Length-1; i++)
+            for (int i = 0; i < employee.Length; i++)
             {
                 if (employee[i].Name == searchingName && employee[i].Surname == searchingSurname)
                 {
                     resultList[counter] = new Employee(employee[i].Name, employee[i].Surname, employee[i].Age, employee[i].Job, employee[i].HomeAddress, employee[i].ContactNumber, employee[i].Education);
-                    Array.Resize(ref resultList, resultList.Length + 1);
+                    Array.Resize(ref resultList, resultList.Length +1);
                     counter++;
                 }
             }
@@ -52,13 +52,18 @@ namespace WarehouseLibrary
             if (myWarehouse.NumOfEmployed > 0)
             {
                 myWarehouse.NumOfEmployed--;
-                employee[numEmployeeInList - 1] = null;
-                for (int i = 0; i < employee.Length; i++)
+                employee[numEmployeeInList] = null;
+                for (int i = 0; i < employee.Length; i++)//надо добавить сдвиг массива, если удаляется элемент из середины массива.
                 {
-                    employee[numEmployeeInList - 1] = employee[numEmployeeInList];
+                    employee[numEmployeeInList] = employee[numEmployeeInList];
                 }
-                Array.Resize(ref employee, employee.Length - 1);
+                Array.Resize(ref employee, employee.Length-1);
             }
+        }
+        public Employee [] AddEmployee(ref Employee[] employees, int numOfAddingEmployees)
+        {
+            Array.Resize(ref employees, employees.Length+numOfAddingEmployees);
+            return employees;
         }
     }
 }
