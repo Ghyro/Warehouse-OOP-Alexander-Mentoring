@@ -46,18 +46,25 @@ namespace WarehouseLibrary
         /// <param name="myWarehouse"></param>
         /// <param name="employee"></param>
         /// <param name="numEmployeeInList"></param>
-        public void QuitEmployee(Warehouse myWarehouse, Employee[] employee, int numEmployeeInList)//можно ли обратьться к переменной склада "NumOfEmployed" без добавления склада в параметр? 
+        public void QuitEmployee(Warehouse myWarehouse, ref Employee[] employee, int numEmployeeInList)//можно ли обратьться к переменной склада "NumOfEmployed" без добавления склада в параметр? 
         {
-
+            Employee[] employees = new Employee[employee.Length - 1];
             if (myWarehouse.NumOfEmployed > 0)
             {
                 myWarehouse.NumOfEmployed--;
-                employee[numEmployeeInList] = null;
-                for (int i = 0; i < employee.Length; i++)//надо добавить сдвиг массива, если удаляется элемент из середины массива.
+                for (int i = 0; i < numEmployeeInList - 1; i++)//надо добавить сдвиг массива, если удаляется элемент из середины и начала массива.
                 {
-                    employee[numEmployeeInList] = employee[numEmployeeInList];
+                    employees[i] = employee[i];
                 }
-                Array.Resize(ref employee, employee.Length-1);
+                for (int i = numEmployeeInList; i < employee.Length; i++)
+                {
+                    employees[i-1] = employee[i];
+                }
+                employee = employees;
+            }
+            else
+            {
+                Console.WriteLine("Number of employeed person is 0");
             }
         }
         public Employee [] AddEmployee(ref Employee[] employees, int numOfAddingEmployees)
