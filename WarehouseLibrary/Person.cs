@@ -8,7 +8,7 @@ namespace WarehouseLibrary
 {
     public abstract class Person : IComparable
     {
-        public int CompareTo(object obj)
+        public int CompareTo(object obj)//реализация для сортировки
         {
             Person p = obj as Person;
             return string.Compare(this.Name, p.Name);
