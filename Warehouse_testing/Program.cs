@@ -181,6 +181,7 @@ namespace WarehouseApp
 
             void DisplayEmployeeList(Employee[] employees)
             {
+                Array.Sort(employees);
                 if (myWarehouse.NumOfEmployed > 0)
                 {
                     Console.WriteLine($"name|age|Job position|home address|contact number|education|ID");
