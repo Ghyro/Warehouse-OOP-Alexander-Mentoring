@@ -7,9 +7,16 @@ namespace WarehouseApp
     {
         /*
         НА ДОРАБОТКУ:
-        -при увольнении сотрудника, добавить сдвиг массива(если удаляемый сотрудник находиться в середине массива);
         -в методах, где для параметра принимается employees, добавить явное приведение типов (позволит использоваться функцианал методов не только для employees[]);
         -AddEmployeesInMainMenu - устранить баг;
+
+    *****-day15_task2:
+        - Task 2. Virtual class.          Optional task. I’m not quite sure that’s possible but you can try.
+        Create a separate base service class with abstract/virtual methods. Inheritance this class on Warehouse services. 
+        Try to imagine how you can create general methods as abstract/virtual in your base class.
+        -для моего кода, вижу вариант для реализации метода Display, но не делал т.к. \то консольное приложение.
+
+
 
         */
         static void Main(string[] args)
@@ -18,7 +25,7 @@ namespace WarehouseApp
             WarehouseService warehouseService = new WarehouseService();
             Person[] persons = new Employee[0];
             Employee[] employees = (Employee[])persons;
-            while (true)
+            while (true) 
             {
                 Console.WriteLine("Welcom to Warehouse");
                 Console.WriteLine("\n1. Display info(title, address, contact number)");
@@ -176,9 +183,8 @@ namespace WarehouseApp
                     default://excaption
                         Console.WriteLine("Wrong selection!");
                         break;
-                }
+                }//main menu
             }
-
             void DisplayEmployeeList(Employee[] employees)
             {
                 Array.Sort(employees);
@@ -194,13 +200,7 @@ namespace WarehouseApp
                 {
                     Console.WriteLine("Now you have 0 employee with that name.");
                 }
-
             }
-
-            /// <summary>
-            /// Display object info;
-            /// </summary>
-            /// <param name="myWarehouse">Array of objects Warehouses</param>
             void DisplayInfo(Warehouse myWarehouse)
             {
                 Console.WriteLine(myWarehouse.Title);
@@ -210,14 +210,7 @@ namespace WarehouseApp
                 int freeVacations = myWarehouse.Vacations - myWarehouse.NumOfEmployed;
                 Console.WriteLine($"number of free vacation: {freeVacations}");
                 Console.WriteLine();
-            }
-
-            /// <summary>
-            /// Change information of object.
-            /// </summary>
-            /// <param name="myWarehouse">Array of objects Warehouses</param>
-            /// <param name="lineForChanging">1.Title, 2.Address, 3. ContactNumber, 4.Vacation</param>
-            /// <returns>object with changed information.</returns>
+            }//Display info about warehouse
             Warehouse UpdateWarehouseInfo(Warehouse myWarehouse, int lineForChanging)
             {
                 switch (lineForChanging)
@@ -261,8 +254,7 @@ namespace WarehouseApp
                         }
                 }
                 return myWarehouse;
-            }
-
+            }//Update info in selected field of warehouse
             void AddEmployeesInMainMenu(int numOfEmployees)//баг если вводишь не число
             {
                 if ((myWarehouse.Vacations - myWarehouse.NumOfEmployed) >= numOfEmployees)
@@ -430,7 +422,7 @@ namespace WarehouseApp
                 Console.WriteLine("6. Update employee's contact number");
                 Console.WriteLine("7. Update employee's education");
                 Console.WriteLine("8. Finish editing information");
-            }
+            }//Display namelist of fields
             void UpdateEmployeeInfo(Employee employee)
             {
                 int numOfLineForChanging;
@@ -547,7 +539,7 @@ namespace WarehouseApp
                     }
                 }
                 while (isWorking);
-            }
+            }//Update info in selected field of employee
         }
     }
 }
