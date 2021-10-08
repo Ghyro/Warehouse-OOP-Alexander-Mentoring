@@ -38,9 +38,8 @@ namespace WarehouseApp
                 Console.WriteLine("8. Update employee info");
                 Console.WriteLine("9. Quit employee(remove)");
                 Console.WriteLine();
-                int operation;
                 Console.ForegroundColor = ConsoleColor.Green;
-                int.TryParse(Console.ReadLine(), out operation);
+                int operation= TrySetNumber();
                 Console.ResetColor();
                 switch (operation) //main menu
                 {
@@ -55,10 +54,9 @@ namespace WarehouseApp
                         {
                             Console.Clear();
                             Console.WriteLine("Enter the number of line that you want to change");
-                            Console.WriteLine("1.Title, 2.Address, 3.Contact number, 4.Vacation");
-                            int numOfLine;
+                            PrintVacations();
                             Console.ForegroundColor = ConsoleColor.Green;
-                            int.TryParse(Console.ReadLine(), out numOfLine);
+                            int numOfLine = TrySetNumber();
                             Console.ResetColor();
                             if (numOfLine == 4)
                             {
@@ -94,9 +92,8 @@ namespace WarehouseApp
                         {
                             Console.Clear();
                             Console.WriteLine("How many employees do you want to add?");
-                            int numOfEmployees;
                             Console.ForegroundColor = ConsoleColor.Green;
-                            int.TryParse(Console.ReadLine(), out numOfEmployees);
+                            int numOfEmployees = TrySetNumber();
                             Console.ResetColor();
                             AddEmployeesInMainMenu(numOfEmployees);
                             AddEmployeeInfo(numOfEmployees);
@@ -116,9 +113,8 @@ namespace WarehouseApp
                         {
                             Console.Clear();
                             Console.WriteLine("Choose how do you want to find employee for updating info:\n 1. By select number of employee from employees list;\n 2. Find by name and surname;");
-                            int selection;
                             Console.ForegroundColor = ConsoleColor.Green;
-                            int.TryParse(Console.ReadLine(), out selection);
+                            int selection = TrySetNumber();
                             Console.ResetColor();
                             switch (selection)
                             {
@@ -172,9 +168,8 @@ namespace WarehouseApp
                     case 9://Quit employee(remove)
                         {
                             Console.WriteLine("Enter number of employee from Employees list: ");
-                            int numOfEmployeeForQuit;
                             Console.ForegroundColor = ConsoleColor.Green;
-                            int.TryParse(Console.ReadLine(), out numOfEmployeeForQuit);
+                            int numOfEmployeeForQuit = TrySetNumber();
                             Console.ResetColor();
                             warehouseService.QuitEmployee(myWarehouse, ref employees, numOfEmployeeForQuit);
                             Console.Clear();
@@ -281,15 +276,14 @@ namespace WarehouseApp
                     string surname = Console.ReadLine();
                     Console.ResetColor();
                     Console.WriteLine("Enter employee's age");
-                    int age;
                     Console.ForegroundColor = ConsoleColor.Green;
-                    int.TryParse(Console.ReadLine(), out age);
+                    int age = TrySetNumber();
                     EnumVacation job = 0;
                     Console.ResetColor();
-                    Console.WriteLine("Select employee's job position:\n1.accountant\n2.cleaner\n3.director\n4.manager\n5.storekeeper");
-                    int selection;
+                    Console.WriteLine("Select employee's job position:");
+                    PrintVacations();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    int.TryParse(Console.ReadLine(), out selection);
+                    int selection = TrySetNumber();
                     switch (selection)
                     {
                         case 1:
@@ -352,15 +346,14 @@ namespace WarehouseApp
                         string surname = Console.ReadLine();
                         Console.ResetColor();
                         Console.WriteLine("Enter employee's age");
-                        int age;
                         Console.ForegroundColor = ConsoleColor.Green;
-                        int.TryParse(Console.ReadLine(), out age);
+                        int age = TrySetNumber();
                         EnumVacation job = 0;
                         Console.ResetColor();
-                        Console.WriteLine("Select employee's job position:\n1.accountant\n2.cleaner\n3.director\n4.manager\n5.storekeeper");
-                        int selection;
+                        Console.WriteLine("Select employee's job position:");
+                        PrintVacations();
                         Console.ForegroundColor = ConsoleColor.Green;
-                        int.TryParse(Console.ReadLine(), out selection);
+                        int selection = TrySetNumber();
                         switch (selection)
                         {
                             case 1:
@@ -429,7 +422,7 @@ namespace WarehouseApp
                 {
                     Console.WriteLine("Enter the number of information that you want to change:");
                     Console.ForegroundColor = ConsoleColor.Green;
-                    int.TryParse((Console.ReadLine()), out numOfLineForChanging);
+                    numOfLineForChanging = TrySetNumber();
                     Console.ResetColor();
                     switch (numOfLineForChanging)
                     {
@@ -453,20 +446,18 @@ namespace WarehouseApp
                         case 3:
                             {
                                 Console.WriteLine("Enter employee's age");
-                                int age;
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                int.TryParse(Console.ReadLine(), out age);
-                                employee.Age=age;
+                                employee.Age=TrySetNumber();
                                 Console.ResetColor();
                                 break;
                             }
                         case 4:
                             {
                                Console.ResetColor();
-                                Console.WriteLine("Select employee's job position:\n1.accountant\n2.cleaner\n3.director\n4.manager\n5.storekeeper");
-                                int selection;
+                                Console.WriteLine("Select employee's job position:");
+                                PrintVacations();
                                 Console.ForegroundColor = ConsoleColor.Green;
-                                int.TryParse(Console.ReadLine(), out selection);
+                                int selection=TrySetNumber();
                                 switch (selection)
                                 {
                                     case 1:
@@ -538,6 +529,32 @@ namespace WarehouseApp
                 }
                 while (isWorking);
             }//Update info in selected field of employee
+
+            void PrintVacations ()
+            {
+                foreach (var position in Enum.GetNames(typeof(EnumVacation)))
+                {
+                    Console.WriteLine($"{1+1}. {position}");
+                }
+            }
+            static int TrySetNumber()
+            {
+                int value = 0;
+                bool process = true;
+                while (process)
+                {
+                    if (int.TryParse(Console.ReadLine(),out value))
+                    {
+                        process = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Input error, default value is 0");
+                    }
+                }
+                return value;
+            }
+
         }
     }
 }
