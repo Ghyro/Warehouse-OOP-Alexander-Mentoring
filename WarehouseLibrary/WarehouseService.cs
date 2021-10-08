@@ -10,7 +10,10 @@ namespace WarehouseLibrary
     {        
         public void CleareInfo(Warehouse myWarehouse)
         {
-            myWarehouse = null;
+            myWarehouse.Title="";
+            myWarehouse.Address = "";
+            myWarehouse.ContactNumber = "";
+            myWarehouse.Vacations = 0;
         }
         public Employee[] AddEmployee(ref Employee[] employees, int numOfAddingEmployees)
         {
