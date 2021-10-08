@@ -75,13 +75,6 @@ namespace WarehouseLibrary
             }
         }
 
-        private int numOfEmployed;
-        public int NumOfEmployed
-        {
-            get { return numOfEmployed; }
-            set { numOfEmployed = value; }
-        }
-
         public Warehouse(string Title, string Address, string ContactNumber, int Vacations)
         {
             this.Title = Title;

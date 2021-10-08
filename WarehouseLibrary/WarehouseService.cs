@@ -20,9 +20,9 @@ namespace WarehouseLibrary
         public void QuitEmployee(Warehouse myWarehouse, ref Employee[] employee, int numEmployeeInList)
         {
             Employee[] employees = new Employee[employee.Length - 1];
-            if (myWarehouse.NumOfEmployed > 0)
+            if (myWarehouse.Employees.Length > 0)
             {
-                myWarehouse.NumOfEmployed--;
+                //myWarehouse.NumOfEmployed--;to do
                 for (int i = 0; i < numEmployeeInList - 1; i++)
                 {
                     employees[i] = employee[i];

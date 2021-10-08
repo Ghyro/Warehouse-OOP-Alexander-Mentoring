@@ -63,7 +63,7 @@ namespace WarehouseApp
                             if (numOfLine == 4)
                             {
                                 Console.WriteLine($"Total vacation now: {myWarehouse.Vacations}");
-                                Console.WriteLine($"Total free vacation now: {myWarehouse.Vacations - myWarehouse.NumOfEmployed}");
+                                Console.WriteLine($"Total free vacation now: {myWarehouse.Vacations - myWarehouse.Employees.Length}");
                                 UpdateWarehouseInfo(myWarehouse, numOfLine);
                                 break;
                             }
@@ -80,7 +80,7 @@ namespace WarehouseApp
                     case 4://Display info about free vacancies
                         {
                             Console.Clear();
-                            Console.WriteLine($"Free vacation now: {myWarehouse.Vacations - myWarehouse.NumOfEmployed}\n");
+                            Console.WriteLine($"Free vacation now: {myWarehouse.Vacations - myWarehouse.Employees.Length}\n");
                             break;
                         }
                     case 5://Display the list of Employees
@@ -188,7 +188,7 @@ namespace WarehouseApp
             void DisplayEmployeeList(Employee[] employees)
             {
                 Array.Sort(employees);
-                if (myWarehouse.NumOfEmployed > 0)
+                if (myWarehouse.Employees.Length > 0)
                 {
                     Console.WriteLine($"name|age|Job position|home address|contact number|education|ID");
                     for (int i = 0; i < employees.Length; i++)
@@ -206,8 +206,8 @@ namespace WarehouseApp
                 Console.WriteLine(myWarehouse.Title);
                 Console.WriteLine(myWarehouse.Address);
                 Console.WriteLine(myWarehouse.ContactNumber);
-                Console.WriteLine($"number of employees: {myWarehouse.NumOfEmployed}");
-                int freeVacations = myWarehouse.Vacations - myWarehouse.NumOfEmployed;
+                Console.WriteLine($"number of employees: {myWarehouse.Employees.Length}");
+                int freeVacations = myWarehouse.Vacations - myWarehouse.Employees.Length;
                 Console.WriteLine($"number of free vacation: {freeVacations}");
                 Console.WriteLine();
             }//Display info about warehouse
@@ -257,7 +257,7 @@ namespace WarehouseApp
             }//Update info in selected field of warehouse
             void AddEmployeesInMainMenu(int numOfEmployees)//баг если вводишь не число
             {
-                if ((myWarehouse.Vacations - myWarehouse.NumOfEmployed) >= numOfEmployees)
+                if ((myWarehouse.Vacations - myWarehouse.Employees.Length) >= numOfEmployees)
                 {
                     warehouseService.AddEmployee(ref employees, numOfEmployees);
                     Console.WriteLine("Operation being completed and objects are added.\n");
@@ -336,8 +336,7 @@ namespace WarehouseApp
                     Console.ResetColor();
                     Console.Clear();
 
-                    employees[employees.Length - 1] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);//adding Employee                    
-                    myWarehouse.NumOfEmployed++;
+                    employees[employees.Length - 1] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);
                 }
                 else if (numOfEmployees > 1)// multy adding employees
                 {
@@ -407,8 +406,7 @@ namespace WarehouseApp
                         string education = Console.ReadLine();
                         Console.ResetColor();
                         Console.Clear();
-                        employees[employees.Length - numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);//adding Employee
-                        myWarehouse.NumOfEmployed++;
+                        employees[employees.Length - numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);
                     }
                 }
             }
