@@ -7,49 +7,52 @@ using System.Threading.Tasks;
 namespace WarehouseLibrary
 {
     public class WarehouseService
-    {        
+    {
         public void CleareInfo(Warehouse myWarehouse)
         {
-            myWarehouse.Title="";
+            myWarehouse.Title = "";
             myWarehouse.Address = "";
             myWarehouse.ContactNumber = "";
             myWarehouse.Vacations = 0;
         }
-        public Employee[] AddEmployee(ref Employee[] employees, int numOfAddingEmployees)
+        public void AddEmployee(Warehouse myWarehouse, int numOfAddingEmployees)
         {
-            Array.Resize(ref employees, employees.Length + numOfAddingEmployees);
-            return employees;
+            Person[] employees = new Employee[myWarehouse.Employees.Length + numOfAddingEmployees];
+            for (int i = 0; i < myWarehouse.Employees.Length; i++)
+            {
+                employees[i] = myWarehouse.Employees[i];
+            }
+            myWarehouse.Employees = (Employee[])employees;
         }
-        public void QuitEmployee(Warehouse myWarehouse, ref Employee[] employee, int numEmployeeInList)
+        public void QuitEmployee(Warehouse myWarehouse, int numEmployeeInList)
         {
-            Employee[] employees = new Employee[employee.Length - 1];
+            Person[] employees = new Employee[myWarehouse.Employees.Length - 1];
             if (myWarehouse.Employees.Length > 0)
             {
-                //myWarehouse.NumOfEmployed--;to do
                 for (int i = 0; i < numEmployeeInList - 1; i++)
                 {
-                    employees[i] = employee[i];
+                    employees[i] = myWarehouse.Employees[i];
                 }
-                for (int i = numEmployeeInList; i < employee.Length; i++)
+                for (int i = numEmployeeInList; i < myWarehouse.Employees.Length; i++)
                 {
-                    employees[i-1] = employee[i];
+                    employees[i - 1] = myWarehouse.Employees[i];
                 }
-                employee = employees;
+                myWarehouse.Employees =(Employee[]) employees;
             }
             else
             {
                 Console.WriteLine("Number of employeed person is 0");
             }
         }
-        public Employee[] SearchEmployee(Employee[] employee, string searchingName, string searchingSurname)
+        public Person[] SearchEmployee(Warehouse myWarehouse, string searchingName, string searchingSurname)
         {
-            Employee[] resultList = new Employee[0];
+            Person[] resultList = new Employee[0];
             int counter = 0;
-            for (int i = 0; i < employee.Length; i++)
+            for (int i = 0; i < myWarehouse.Employees.Length; i++)
             {
-                if (employee[i].Name == searchingName && employee[i].Surname == searchingSurname)
+                if (myWarehouse.Employees[i].Name == searchingName && myWarehouse.Employees[i].Surname == searchingSurname)
                 {
-                    resultList[counter] = new Employee(employee[i].Name, employee[i].Surname, employee[i].Age, employee[i].Job, employee[i].HomeAddress, employee[i].ContactNumber, employee[i].Education);
+                    resultList[counter] = new Employee(myWarehouse.Employees[i].Name, myWarehouse.Employees[i].Surname, myWarehouse.Employees[i].Age, myWarehouse.Employees[i].Job, myWarehouse.Employees[i].HomeAddress, myWarehouse.Employees[i].ContactNumber, myWarehouse.Employees[i].Education);
                     Array.Resize(ref resultList, resultList.Length + 1);
                     counter++;
                 }
