@@ -47,7 +47,7 @@ namespace WarehouseLibrary
         public int Vacations
         {
             get { return vacations; }
-            private set
+            set
             {
                 if (value < 0)
                 {
@@ -56,7 +56,6 @@ namespace WarehouseLibrary
                 vacations = value;
             }
         }
-
 
         private Employee[] employees;
         public Employee[] Employees
@@ -67,19 +66,8 @@ namespace WarehouseLibrary
             }
             set
             {
-                if (employees == null)
-                {
-
-                }
                 employees = value;
             }
-        }
-
-        private int numOfEmployed;
-        public int NumOfEmployed
-        {
-            get { return numOfEmployed; }
-            set { numOfEmployed = value; }
         }
 
         public Warehouse(string Title, string Address, string ContactNumber, int Vacations)
@@ -88,6 +76,7 @@ namespace WarehouseLibrary
             this.Address = Address;
             this.ContactNumber = ContactNumber;
             this.Vacations = Vacations;
+            this.Employees = new Employee[0];
         }
         public void UpdateVacation(int numVacations)
         {

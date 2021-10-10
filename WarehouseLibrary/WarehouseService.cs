@@ -8,101 +8,56 @@ namespace WarehouseLibrary
 {
     public class WarehouseService
     {
-        /// <summary>
-        /// Change information of object.
-        /// </summary>
-        /// <param name="myWarehouse">Array of objects Warehouses</param>
-        /// <param name="lineForChanging">1.Title, 2.Address, 3. ContactNumber, 4.Vacation</param>
-        /// <returns>object with changed information.</returns>
-        public Warehouse UpdateInfo(Warehouse myWarehouse, int lineForChanging)
-        {
-            switch (lineForChanging)
-            {
-                case 1:
-                    {
-                        Console.WriteLine("You are updating title of warehouse, enter info");
-                        myWarehouse.Title = Console.ReadLine();
-                        break;
-                    }
-                case 2:
-                    {
-                        Console.WriteLine("You are updating address of warehouse, enter info");
-                        myWarehouse.Address = Console.ReadLine();
-                        break;
-                    }
-                case 3:
-                    {
-                        Console.WriteLine("You are updating conteact number of warehouse, enter info");
-                        myWarehouse.ContactNumber = Console.ReadLine();
-                        break;
-                    }
-                case 4:
-                    {
-                        Console.WriteLine("You are updating vacation of the warehouse, enter info");
-                        int i;
-                        myWarehouse.UpdateVacation(int.Parse(Console.ReadLine()));
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Wrong line for changing");
-                        break;
-                    }
-            }
-            return myWarehouse;
-        }
-
-        /// <summary>
-        /// set params to null
-        /// </summary>
-        /// <param name="myWarehouse"></param>
         public void CleareInfo(Warehouse myWarehouse)
         {
-            myWarehouse = null;
+            myWarehouse.Title = "";
+            myWarehouse.Address = "";
+            myWarehouse.ContactNumber = "";
+            myWarehouse.Vacations = 0;
         }
-
-        /// <summary>
-        /// search obj by name/surname
-        /// </summary>
-        /// <param name="employee"></param>
-        /// <param name="searchingName"></param>
-        /// <param name="searchingSurname"></param>
-        /// <returns>array of obj </returns>
-        public Employee[] SearchEmployee(Employee[] employee, string searchingName, string searchingSurname)
+        public void AddEmployee(Warehouse myWarehouse, int numOfAddingEmployees)
         {
-            Employee[] resultList= new Employee[1];
-            int counter = 0;
-            for (int i = 0; i < employee.Length-1; i++)
+            Person[] employees = new Employee[myWarehouse.Employees.Length + numOfAddingEmployees];
+            for (int i = 0; i < myWarehouse.Employees.Length; i++)
             {
-                if (employee[i].Name == searchingName && employee[i].Surname == searchingSurname)
+                employees[i] = myWarehouse.Employees[i];
+            }
+            myWarehouse.Employees = (Employee[])employees;
+        }
+        public void QuitEmployee(Warehouse myWarehouse, int numEmployeeInList)
+        {
+            Person[] employees = new Employee[myWarehouse.Employees.Length - 1];
+            if (myWarehouse.Employees.Length > 0)
+            {
+                for (int i = 0; i < numEmployeeInList - 1; i++)
                 {
-                    resultList[counter] = new Employee(employee[i].Name, employee[i].Surname, employee[i].Age, employee[i].Job, employee[i].HomeAddress, employee[i].ContactNumber, employee[i].Education);
+                    employees[i] = myWarehouse.Employees[i];
+                }
+                for (int i = numEmployeeInList; i < myWarehouse.Employees.Length; i++)
+                {
+                    employees[i - 1] = myWarehouse.Employees[i];
+                }
+                myWarehouse.Employees =(Employee[]) employees;
+            }
+            else
+            {
+                Console.WriteLine("Number of employeed person is 0");
+            }
+        }
+        public Person[] SearchEmployee(Warehouse myWarehouse, string searchingName, string searchingSurname)
+        {
+            Person[] resultList = new Employee[0];
+            int counter = 0;
+            for (int i = 0; i < myWarehouse.Employees.Length; i++)
+            {
+                if (myWarehouse.Employees[i].Name == searchingName && myWarehouse.Employees[i].Surname == searchingSurname)
+                {
+                    resultList[counter] = new Employee(myWarehouse.Employees[i].Name, myWarehouse.Employees[i].Surname, myWarehouse.Employees[i].Age, myWarehouse.Employees[i].Job, myWarehouse.Employees[i].HomeAddress, myWarehouse.Employees[i].ContactNumber, myWarehouse.Employees[i].Education);
                     Array.Resize(ref resultList, resultList.Length + 1);
                     counter++;
                 }
             }
             return resultList;
-        }
-
-        /// <summary>
-        /// set quit element to null and resize(delete element)
-        /// </summary>
-        /// <param name="myWarehouse"></param>
-        /// <param name="employee"></param>
-        /// <param name="numEmployeeInList"></param>
-        public void QuitEmployee(Warehouse myWarehouse, Employee[] employee, int numEmployeeInList)//можно ли обратьться к переменной склада "NumOfEmployed" без добавления склада в параметр? 
-        {
-
-            if (myWarehouse.NumOfEmployed > 0)
-            {
-                myWarehouse.NumOfEmployed--;
-                employee[numEmployeeInList - 1] = null;
-                for (int i = 0; i < employee.Length; i++)
-                {
-                    employee[numEmployeeInList - 1] = employee[numEmployeeInList];
-                }
-                Array.Resize(ref employee, employee.Length - 1);
-            }
         }
     }
 }
