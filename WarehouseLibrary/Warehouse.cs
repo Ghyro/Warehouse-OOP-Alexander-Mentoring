@@ -2,8 +2,13 @@
 
 namespace WarehouseLibrary
 {
-    public class Warehouse
+    public class Warehouse:IComparable<Warehouse>
     {
+        public int CompareTo(Warehouse w)
+        {
+            return this.Title.CompareTo(w.Title);
+        }
+        
         private string title;
         public string Title
         {
@@ -81,6 +86,35 @@ namespace WarehouseLibrary
         public void UpdateVacation(int numVacations)
         {
             this.Vacations = numVacations;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            Warehouse w = obj as Warehouse;
+            if (w as Warehouse == null)
+            {
+                return false;
+            }
+            return w.Title == this.Title;
+        }
+        public bool Equals(Warehouse warehouse)
+        {
+            if (warehouse == null)
+            {
+                return false;
+            }
+            return warehouse.Title == this.Title;
+        }
+        public override int GetHashCode()
+        {
+            int unitCode;
+            if (Title.Length < 10)
+                unitCode = 1;
+            else unitCode = 2;
+            return Title.Length+unitCode;
         }
     }
 }

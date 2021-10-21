@@ -1,5 +1,6 @@
 ﻿using System;
 using WarehouseLibrary;
+using System.Collections.Generic;
 
 namespace WarehouseApp
 {
@@ -50,7 +51,7 @@ namespace WarehouseApp
                     case 3://Clear all info about Warehouse(re - create Warehouse)
                         {
                             Console.Clear();
-                            warehouseService.CleareInfo(myWarehouse);
+                            warehouseService.CleareInfo(ref myWarehouse);
                             break;
                         }
                     case 4://Display info about free vacancies
@@ -169,7 +170,7 @@ namespace WarehouseApp
         }
         static void DisplayEmployeeList(Warehouse myWarehouse)
         {
-            Array.Sort(myWarehouse.Employees);
+            WarehouseService.Sort<Employee>(myWarehouse.Employees);
             if (myWarehouse.Employees.Length + 1 > 0)
             {
                 Console.WriteLine($"name    |age    |Job position   |home address   |contact number |education");
@@ -499,6 +500,14 @@ namespace WarehouseApp
                 }
             }
             return value;
+        }
+
+        static void PrintList<T>(IEnumerable<T> list)//put in program.cs
+        {
+            foreach (var item in list)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }

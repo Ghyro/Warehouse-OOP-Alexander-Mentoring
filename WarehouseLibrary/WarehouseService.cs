@@ -8,12 +8,9 @@ namespace WarehouseLibrary
 {
     public class WarehouseService
     {
-        public void CleareInfo(Warehouse myWarehouse)
+        public void CleareInfo(ref Warehouse myWarehouse)
         {
-            myWarehouse.Title = "";
-            myWarehouse.Address = "";
-            myWarehouse.ContactNumber = "";
-            myWarehouse.Vacations = 0;
+            myWarehouse = null;
         }
         public void AddEmployee(Warehouse myWarehouse, int numOfAddingEmployees)
         {
@@ -37,7 +34,7 @@ namespace WarehouseLibrary
                 {
                     employees[i - 1] = myWarehouse.Employees[i];
                 }
-                myWarehouse.Employees =(Employee[]) employees;
+                myWarehouse.Employees = (Employee[])employees;
             }
             else
             {
@@ -52,12 +49,52 @@ namespace WarehouseLibrary
             {
                 if (myWarehouse.Employees[i].Name == searchingName && myWarehouse.Employees[i].Surname == searchingSurname)
                 {
-                    resultList[counter] = new Employee(myWarehouse.Employees[i].Name, myWarehouse.Employees[i].Surname, myWarehouse.Employees[i].Age, myWarehouse.Employees[i].Job, myWarehouse.Employees[i].HomeAddress, myWarehouse.Employees[i].ContactNumber, myWarehouse.Employees[i].Education);
+                    resultList[counter] = myWarehouse.Employees[i];
                     Array.Resize(ref resultList, resultList.Length + 1);
                     counter++;
                 }
             }
             return resultList;
         }
+
+        public static void Sort<T>(T[] list) where T : Employee
+        {
+            QuickSortInternal(list, 0, list.Length - 1);
+        }
+        private static void QuickSortInternal<T>(T[] list, int left, int pivot) where T : Employee
+        {
+            if (left >= pivot)
+            {
+                return;
+            }
+
+            int wall = WallInternal(list, left, pivot);
+
+            QuickSortInternal(list, left, wall - 1);
+            QuickSortInternal(list, wall + 1, pivot);
+        }
+        private static int WallInternal<T>(T[] list, int left, int pivot) where T : Employee
+        {
+            T wall = list[pivot];
+            // stack items smaller than wall from left to pivot
+            int swapIndex = left;
+            for (int i = left; i < pivot; i++)
+            {
+                T item = list[i];
+                if (item.CompareTo(wall) <= 0)
+                {
+                    list[i] = list[swapIndex];
+                    list[swapIndex] = item;
+
+                    swapIndex++;
+                }
+            }
+            // put the wall after all the smaller items
+            list[pivot] = list[swapIndex];
+            list[swapIndex] = wall;
+
+            return pivot;
+        }
     }
 }
+

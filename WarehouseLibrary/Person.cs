@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    public abstract class Person : IComparable
+    public abstract class Person : IComparable<Person>
     {
-        public int CompareTo(object obj)//реализация для сортировки
+        public int CompareTo(Person p)
         {
-            Person p = obj as Person;
-            return string.Compare(this.Name, p.Name);
+                return this.Age.CompareTo(p.Age);
         }
 
         private string name;
