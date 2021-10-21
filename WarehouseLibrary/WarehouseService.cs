@@ -81,7 +81,7 @@ namespace WarehouseLibrary
             for (int i = left; i < pivot; i++)
             {
                 T item = list[i];
-                if (item.CompareTo(wall) <= 0)
+                if (item.CompareTo(wall) <= 0)//TO DO how to refactoring, that working with where T:struct
                 {
                     list[i] = list[swapIndex];
                     list[swapIndex] = item;

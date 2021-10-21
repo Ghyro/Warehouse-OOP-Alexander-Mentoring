@@ -1,6 +1,7 @@
 ﻿using System;
 using WarehouseLibrary;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WarehouseApp
 {
@@ -8,11 +9,14 @@ namespace WarehouseApp
     {
         static void Main(string[] args)
         {
+            var timer = new Stopwatch();
+            timer.Start();
             Warehouse myWarehouse = new Warehouse("Bag&socks", "Belarus, Minsk, Radujnaya str.", "+375293628848", 5);
             WarehouseService warehouseService = new WarehouseService();
             Person[] persons = new Employee[0];
             myWarehouse.Employees = (Employee[])persons;
-            while (true)
+            bool isWorking = true;
+            while (isWorking)
             {
                 Console.WriteLine("Welcom to Warehouse");
                 Console.WriteLine("\n1. Display info(title, address, contact number)");
@@ -24,6 +28,7 @@ namespace WarehouseApp
                 Console.WriteLine("7. Search the employee by Name and Surname");
                 Console.WriteLine("8. Update employee info");
                 Console.WriteLine("9. Quit employee(remove)");
+                Console.WriteLine("0. Exit");
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
                 int operation = TrySetNumber();
@@ -162,11 +167,20 @@ namespace WarehouseApp
                             Console.Clear();
                             break;
                         }
+                    case 0: //exit
+                        {
+                            isWorking = false;
+                            break;
+                        }
                     default://excaption
                         Console.WriteLine("Wrong selection!");
                         break;
                 }//main menu
             }
+            timer.Stop();//todo add after adding stop program in main menu.
+            TimeSpan ts = timer.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}",ts.Minutes, ts.Seconds);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
         static void DisplayEmployeeList(Warehouse myWarehouse)
         {
