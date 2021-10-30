@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    public class Employee : Person, IComparable<Employee>
+    public class Employee : Person, IComparable<Employee>, ICloneable
     {
         private EnumVacation job;
         public EnumVacation Job
@@ -18,12 +18,19 @@ namespace WarehouseLibrary
         {
             Job = job;
         }
-
         public int CompareTo(Employee e)
         {
             return this.Age.CompareTo(e.Age);
         }
-
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+            //Guid id = new Guid();
+            //return new Employee
+            //{
+            //    Name = this.Name, Surname = this.Surname, Age = this.Age, Job = this.Job, HomeAddress = this.HomeAddress, ContactNumber = this.ContactNumber, Education = this.Education, Id = id
+            //};
+        }
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -45,7 +52,6 @@ namespace WarehouseLibrary
             }
             return e.Age == this.Age;
         }
-
         public override int GetHashCode()
         {
             int unitCode;
