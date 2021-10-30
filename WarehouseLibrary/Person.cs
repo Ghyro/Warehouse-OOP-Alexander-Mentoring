@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    public abstract class Person : IComparable<Person>
+    public abstract class Person : IComparable<Person>, IHasId, ICommonServises
     {
         public int CompareTo(Person p)
         {
-                return this.Age.CompareTo(p.Age);
+            return this.Age.CompareTo(p.Age);
         }
 
         private string name;
@@ -57,11 +57,11 @@ namespace WarehouseLibrary
             set { education = value; }
         }
 
-        private Guid personID;
-        public Guid PersonID
+        private Guid id;
+        public Guid Id
         {
-            get { return personID; }
-            private set { personID = value; }
+            get { return id; }
+            internal set { id = value; }
         }
 
 
@@ -73,7 +73,7 @@ namespace WarehouseLibrary
             HomeAddress = homeAddress;
             ContactNumber = contactNumber;
             Education = education;
-            PersonID = Guid.NewGuid();
+            id = Guid.NewGuid();
         }
     }
 }

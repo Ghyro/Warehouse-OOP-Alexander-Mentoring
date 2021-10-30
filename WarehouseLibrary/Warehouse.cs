@@ -2,13 +2,13 @@
 
 namespace WarehouseLibrary
 {
-    public class Warehouse:IComparable<Warehouse>
+    public class Warehouse : IComparable<Warehouse>, IHasId,IWarehouseServicses,ICommonServises
     {
         public int CompareTo(Warehouse w)
         {
             return this.Title.CompareTo(w.Title);
         }
-        
+
         private string title;
         public string Title
         {
@@ -75,6 +75,13 @@ namespace WarehouseLibrary
             }
         }
 
+        private Guid id;
+        public Guid Id
+        {
+            get { return id; }
+            internal set { id = value; }
+        }
+
         public Warehouse(string Title, string Address, string ContactNumber, int Vacations)
         {
             this.Title = Title;
@@ -114,7 +121,7 @@ namespace WarehouseLibrary
             if (Title.Length < 10)
                 unitCode = 1;
             else unitCode = 2;
-            return Title.Length+unitCode;
+            return Title.Length + unitCode;
         }
     }
 }
