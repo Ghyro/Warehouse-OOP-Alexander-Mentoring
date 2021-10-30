@@ -12,9 +12,9 @@ namespace WarehouseApp
             var timer = new Stopwatch();
             timer.Start();
             Warehouse myWarehouse = new Warehouse("Bag&socks", "Belarus, Minsk, Radujnaya str.", "+375293628848", 5);
-            WarehouseService warehouseService = new WarehouseService();
             Person[] persons = new Employee[0];
             myWarehouse.Employees = (Employee[])persons;
+            IWarehouseServicses warehouseServices = myWarehouse;
             bool isWorking = true;
             while (isWorking)
             {
@@ -56,7 +56,7 @@ namespace WarehouseApp
                     case 3://Clear all info about Warehouse(re - create Warehouse)
                         {
                             Console.Clear();
-                            warehouseService.CleareInfo(ref myWarehouse);
+                            warehouseServices.CleareInfo(ref myWarehouse);
                             break;
                         }
                     case 4://Display info about free vacancies
@@ -69,18 +69,48 @@ namespace WarehouseApp
                         {
                             Console.Clear();
                             Console.WriteLine("List of employees:");
+                            ICommonServises.Sort<Employee>(myWarehouse.Employees);//не понимаю почему не видны медтоды из ICommonServices
                             DisplayEmployeeList(myWarehouse);
                             break;
                         }
                     case 6://add employee
                         {
                             Console.Clear();
-                            Console.WriteLine("How many employees do you want to add?");
+                            Console.WriteLine("1. Add new employees\n2. Add new employee by cloning");
+                            Console.WriteLine("Select your choise: ");
                             Console.ForegroundColor = ConsoleColor.Green;
-                            int numOfEmployees = TrySetNumber();
-                            Console.ResetColor();
-                            AddEmployeesInMainMenu(myWarehouse,warehouseService,numOfEmployees);
-                            AddEmployeeInfo(myWarehouse,numOfEmployees);
+                            int op = TrySetNumber();
+                            Console.ResetColor();                            
+                            switch (op)
+                            {
+                                case 1:
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("How many employees do you want to add?");
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        int numOfEmployees = TrySetNumber();
+                                        Console.ResetColor();
+                                        AddEmployee(myWarehouse, warehouseServices, numOfEmployees);
+                                        AddEmployeeInfo(myWarehouse, numOfEmployees);
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        if (myWarehouse.Employees.Length > 0)
+                                        {
+                                        Console.Clear();
+                                        Console.WriteLine("List of employees:");
+                                        DisplayEmployeeList(myWarehouse);
+                                        AddEmployee(myWarehouse, warehouseServices, 1);
+                                        AddEmployeeByClone(myWarehouse);
+                                        UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length]);
+                                        break;
+                                        }
+                                        else
+                                            Console.WriteLine("You haven't got employee for cloning\n\n\n\n");
+                                        break;
+                                    }
+                            }
                             break;
                         }
                     case 7://Search the employee by Name and Surname
@@ -90,7 +120,7 @@ namespace WarehouseApp
                             string searcingName = Console.ReadLine();
                             Console.WriteLine("Enter searcing surname");
                             string searchingSurname = Console.ReadLine();
-                            DisplayEmployeeList((Employee[])warehouseService.SearchEmployee(myWarehouse, searcingName, searchingSurname));
+                            DisplayEmployeeList((Employee[])warehouseServices.SearchEmployee(myWarehouse, searcingName, searchingSurname));
                             break;
                         }
                     case 8://Update employee info
@@ -114,7 +144,7 @@ namespace WarehouseApp
                                         PersonFieldsNames();
                                         for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
                                         {
-                                            if (myWarehouse.Employees[i].PersonID == myWarehouse.Employees[searchingString - 1].PersonID)
+                                            if (myWarehouse.Employees[i].Id == myWarehouse.Employees[searchingString - 1].Id)
                                             {
                                                 UpdateEmployeeInfo(myWarehouse.Employees[i]);
                                                 break;
@@ -129,7 +159,7 @@ namespace WarehouseApp
                                         string searcingName = Console.ReadLine();
                                         Console.WriteLine("Enter searcing surname");
                                         string searchingSurname = Console.ReadLine();
-                                        DisplayEmployeeList((Employee[])warehouseService.SearchEmployee(myWarehouse, searcingName, searchingSurname));//searching person
+                                        DisplayEmployeeList((Employee[])warehouseServices.SearchEmployee(myWarehouse, searcingName, searchingSurname));//searching person
                                         Console.WriteLine("\nEnter number of employee that you want to change: ");
                                         int searchingString = TrySetNumber();
                                         Console.ForegroundColor = ConsoleColor.Green;
@@ -137,7 +167,7 @@ namespace WarehouseApp
                                         PersonFieldsNames();
                                         for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
                                         {
-                                            if (myWarehouse.Employees[i].PersonID == myWarehouse.Employees[searchingString].PersonID)
+                                            if (myWarehouse.Employees[i].Id == myWarehouse.Employees[searchingString].Id)
                                             {
                                                 UpdateEmployeeInfo(myWarehouse.Employees[i]);
                                                 break;
@@ -163,7 +193,7 @@ namespace WarehouseApp
                                 break;
                             }
                             Console.ResetColor();
-                            warehouseService.QuitEmployee(myWarehouse, numOfEmployeeForQuit);
+                            warehouseServices.QuitEmployee(myWarehouse, numOfEmployeeForQuit);
                             Console.Clear();
                             break;
                         }
@@ -179,12 +209,11 @@ namespace WarehouseApp
             }
             timer.Stop();//todo add after adding stop program in main menu.
             TimeSpan ts = timer.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}",ts.Minutes, ts.Seconds);
+            string elapsedTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
             Console.WriteLine("RunTime " + elapsedTime);
         }
         static void DisplayEmployeeList(Warehouse myWarehouse)
         {
-            WarehouseService.Sort<Employee>(myWarehouse.Employees);
             if (myWarehouse.Employees.Length + 1 > 0)
             {
                 Console.WriteLine($"name    |age    |Job position   |home address   |contact number |education");
@@ -271,11 +300,11 @@ namespace WarehouseApp
             }
             return myWarehouse;
         }//Update info in selected field of warehouse
-        static void AddEmployeesInMainMenu(Warehouse myWarehouse, WarehouseService service,int numOfEmployees)//баг если вводишь не число
+        static void AddEmployee(Warehouse myWarehouse, IWarehouseServicses warehouseServicses, int numOfEmployees)//баг если вводишь не число
         {
             if ((myWarehouse.Vacations - myWarehouse.Employees.Length) >= numOfEmployees)
             {
-                service.AddEmployee(myWarehouse, numOfEmployees);
+                warehouseServicses.AddEmployee(myWarehouse, numOfEmployees);
                 Console.WriteLine("Operation being completed and objects are added.\n");
             }
             else
@@ -284,7 +313,7 @@ namespace WarehouseApp
                 Console.WriteLine($"available free vacation: {myWarehouse.Vacations - myWarehouse.Employees.Length}\n");
             }
         }
-        static void AddEmployeeInfo(Warehouse myWarehouse,int numOfEmployees)
+        static void AddEmployeeInfo(Warehouse myWarehouse, int numOfEmployees)
         {
             for (int i = 0; i < myWarehouse.Employees.Length; i++)
             {
@@ -360,6 +389,14 @@ namespace WarehouseApp
                     myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);
                 }
             }
+        }
+        static void AddEmployeeByClone(Warehouse myWarehouse)
+        {
+                Console.WriteLine("Select number of employee that you want to clone:");
+                Console.ForegroundColor = ConsoleColor.Green;
+                int numOfEmployee = TrySetNumber();
+                Console.ResetColor();
+                myWarehouse.Employees[myWarehouse.Employees.Length] =(Employee)myWarehouse.Employees[numOfEmployee-1].Clone();//TODO Переопределить метод clone, т.к. у каждого объекта есть свой ID
         }
         static void PersonFieldsNames()
         {
@@ -516,13 +553,13 @@ namespace WarehouseApp
             return value;
         }
 
-        static void PrintList<T>(IEnumerable<T> list)//put in program.cs
-        {
-            foreach (var item in list)
-            {
-                Console.WriteLine(item);
-            }
-        }
+        //static void PrintList<T>(IEnumerable<T> list)//put in program.cs
+        //{
+        //    foreach (var item in list)
+        //    {
+        //        Console.WriteLine(item);
+        //    }
+        //}
     }
 }
 
