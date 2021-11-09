@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    public abstract class Person : IComparable<Person>, IHasId, ICommonServises
+    public abstract class Person : IComparable<Person>, IHasId
     {
         public int CompareTo(Person p)
         {
@@ -61,7 +61,7 @@ namespace WarehouseLibrary
         public Guid Id
         {
             get { return id; }
-            internal set { id = value; }
+            private set { id = value; }
         }
 
 
@@ -75,5 +75,6 @@ namespace WarehouseLibrary
             Education = education;
             id = Guid.NewGuid();
         }
+        public Person() { }
     }
 }

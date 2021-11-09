@@ -6,8 +6,47 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    public interface IWarehouseServicses
+    public class WarehouseServices : IWarehouseServices, ICommonServises
     {
+
+        public static void QuickSort<T>(T[] list) where T : IComparable<T>
+        {
+            QuickSortInternal(list, 0, list.Length - 1);
+        }
+        private static void QuickSortInternal<T>(T[] list, int left, int right) where T : IComparable<T>
+        {
+            if (left >= right)
+            {
+                return;
+            }
+            int pivot = PivotInternal(list, left, right);
+            QuickSortInternal(list, left, pivot - 1);
+            QuickSortInternal(list, pivot + 1, right);
+        }
+        private static int PivotInternal<T>(T[] list, int left, int right) where T : IComparable<T>
+        {
+            T pivot = list[right];
+            // stack items smaller than partition from left to right
+            int WallIndex = left;
+            for (int i = left; i < right; i++)
+            {
+                T item = list[i];
+                if (item.CompareTo(pivot) <= 0)
+                {
+                    list[i] = list[WallIndex];
+                    list[WallIndex] = item;
+
+                    WallIndex++;
+                }
+            }
+            // put the wall after all the smaller items
+            list[right] = list[WallIndex];
+            list[WallIndex] = pivot;
+
+            return right;
+        }
+
+
         public void CleareInfo(ref Warehouse myWarehouse)
         {
             myWarehouse = null;
@@ -58,3 +97,5 @@ namespace WarehouseLibrary
         }
     }
 }
+
+

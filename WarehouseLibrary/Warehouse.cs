@@ -2,7 +2,7 @@
 
 namespace WarehouseLibrary
 {
-    public class Warehouse : IComparable<Warehouse>, IHasId,IWarehouseServicses,ICommonServises
+    public class Warehouse : IComparable<Warehouse>, IHasId
     {
         public int CompareTo(Warehouse w)
         {
@@ -78,8 +78,8 @@ namespace WarehouseLibrary
         private Guid id;
         public Guid Id
         {
-            get { return id; }
-            internal set { id = value; }
+            get { return id;}
+            private set { id = value;}
         }
 
         public Warehouse(string Title, string Address, string ContactNumber, int Vacations)
@@ -89,6 +89,7 @@ namespace WarehouseLibrary
             this.ContactNumber = ContactNumber;
             this.Vacations = Vacations;
             this.Employees = new Employee[0];
+            Id = Guid.NewGuid();
         }
         public void UpdateVacation(int numVacations)
         {

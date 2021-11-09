@@ -8,10 +8,5 @@ namespace WarehouseLibrary
 {
     public interface IHasId
     {
-        public Guid Id
-        {
-            get { return Id; }
-            private set { Id = value; }
-        }
     }
 }

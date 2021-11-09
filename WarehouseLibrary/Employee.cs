@@ -24,13 +24,17 @@ namespace WarehouseLibrary
         }
         public object Clone()
         {
-            return this.MemberwiseClone();
-            //Guid id = new Guid();
-            //return new Employee
-            //{
-            //    Name = this.Name, Surname = this.Surname, Age = this.Age, Job = this.Job, HomeAddress = this.HomeAddress, ContactNumber = this.ContactNumber, Education = this.Education, Id = id
-            //};
+            return new Employee(
+                Name = this.Name,
+                Surname = this.Surname,
+                Age = this.Age,
+                Job = this.Job,
+                HomeAddress = this.HomeAddress,
+                ContactNumber = this.ContactNumber,
+                Education = this.Education
+            );
         }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

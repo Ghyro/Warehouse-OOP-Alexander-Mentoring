@@ -14,7 +14,7 @@ namespace WarehouseApp
             Warehouse myWarehouse = new Warehouse("Bag&socks", "Belarus, Minsk, Radujnaya str.", "+375293628848", 5);
             Person[] persons = new Employee[0];
             myWarehouse.Employees = (Employee[])persons;
-            IWarehouseServicses warehouseServices = myWarehouse;
+            WarehouseServices warehouseServices = new WarehouseServices();
             bool isWorking = true;
             while (isWorking)
             {
@@ -69,7 +69,7 @@ namespace WarehouseApp
                         {
                             Console.Clear();
                             Console.WriteLine("List of employees:");
-                            ICommonServises.Sort<Employee>(myWarehouse.Employees);//не понимаю почему не видны медтоды из ICommonServices
+                            WarehouseServices.QuickSort<Employee>(myWarehouse.Employees);
                             DisplayEmployeeList(myWarehouse);
                             break;
                         }
@@ -103,7 +103,8 @@ namespace WarehouseApp
                                         DisplayEmployeeList(myWarehouse);
                                         AddEmployee(myWarehouse, warehouseServices, 1);
                                         AddEmployeeByClone(myWarehouse);
-                                        UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length]);
+                                        PersonFieldsNames();
+                                        UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length-1]);
                                         break;
                                         }
                                         else
@@ -300,7 +301,7 @@ namespace WarehouseApp
             }
             return myWarehouse;
         }//Update info in selected field of warehouse
-        static void AddEmployee(Warehouse myWarehouse, IWarehouseServicses warehouseServicses, int numOfEmployees)//баг если вводишь не число
+        static void AddEmployee(Warehouse myWarehouse, IWarehouseServices warehouseServicses, int numOfEmployees)//баг если вводишь не число
         {
             if ((myWarehouse.Vacations - myWarehouse.Employees.Length) >= numOfEmployees)
             {
@@ -386,7 +387,7 @@ namespace WarehouseApp
                 }
                 else
                 {
-                    myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);
+                    myWarehouse.Employees[myWarehouse.Employees.Length -1- numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);//todo -1
                 }
             }
         }
@@ -396,7 +397,7 @@ namespace WarehouseApp
                 Console.ForegroundColor = ConsoleColor.Green;
                 int numOfEmployee = TrySetNumber();
                 Console.ResetColor();
-                myWarehouse.Employees[myWarehouse.Employees.Length] =(Employee)myWarehouse.Employees[numOfEmployee-1].Clone();//TODO Переопределить метод clone, т.к. у каждого объекта есть свой ID
+                myWarehouse.Employees[myWarehouse.Employees.Length-1] =(Employee)myWarehouse.Employees[numOfEmployee-1].Clone();//TODO Переопределить метод clone, т.к. у каждого объекта есть свой ID
         }
         static void PersonFieldsNames()
         {
@@ -552,17 +553,10 @@ namespace WarehouseApp
             }
             return value;
         }
-
-        //static void PrintList<T>(IEnumerable<T> list)//put in program.cs
-        //{
-        //    foreach (var item in list)
-        //    {
-        //        Console.WriteLine(item);
-        //    }
-        //}
     }
 }
 
 
 
 
+ 
