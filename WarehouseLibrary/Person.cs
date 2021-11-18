@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
+    [Serializable]
     public abstract class Person : IComparable<Person>, IHasId
     {
         public int CompareTo(Person p)

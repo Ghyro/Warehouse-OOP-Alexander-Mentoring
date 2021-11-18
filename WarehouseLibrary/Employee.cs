@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
+    [Serializable]
     public class Employee : Person, IComparable<Employee>, ICloneable
     {
         private EnumVacation job;

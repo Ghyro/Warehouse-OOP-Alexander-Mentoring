@@ -8,7 +8,6 @@ namespace WarehouseLibrary
 {
     public class WarehouseServices : IWarehouseServices, ICommonServises
     {
-
         public static void QuickSort<T>(T[] list) where T : IComparable<T>
         {
             QuickSortInternal(list, 0, list.Length - 1);
@@ -80,7 +79,7 @@ namespace WarehouseLibrary
                 Console.WriteLine("Number of employeed person is 0");
             }
         }
-        public Person[] SearchEmployee(Warehouse myWarehouse, string searchingName, string searchingSurname)
+        public Person[] SearchEmployes(Warehouse myWarehouse, string searchingName, string searchingSurname)
         {
             Person[] resultList = new Employee[0];
             int counter = 0;

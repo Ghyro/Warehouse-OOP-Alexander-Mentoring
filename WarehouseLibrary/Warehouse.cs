@@ -2,6 +2,7 @@
 
 namespace WarehouseLibrary
 {
+    [Serializable]
     public class Warehouse : IComparable<Warehouse>, IHasId
     {
         public int CompareTo(Warehouse w)
