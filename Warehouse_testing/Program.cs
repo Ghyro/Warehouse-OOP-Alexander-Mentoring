@@ -11,9 +11,11 @@ namespace WarehouseApp
         {
             var timer = new Stopwatch();
             timer.Start();
+
+            string path = @"D:\MyLessons\Warehouse-OOP-Alexander-Mentoring\Warehouse_testing\bin\Debug\net5.0\warehouse.dat";
+            
             Warehouse myWarehouse = new Warehouse("Bag&socks", "Belarus, Minsk, Radujnaya str.", "+375293628848", 5);
-            Person[] persons = new Employee[0];
-            myWarehouse.Employees = (Employee[])persons;
+            FileSystemStore.LoadData(path, ref myWarehouse);
             WarehouseServices warehouseServices = new WarehouseServices();
             bool isWorking = true;
             while (isWorking)
@@ -30,33 +32,31 @@ namespace WarehouseApp
                 Console.WriteLine("9. Quit employee(remove)");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Green;
                 int operation = TrySetNumber();
-                Console.ResetColor();
                 switch (operation) //main menu
                 {
-                    case 1://Display info(title, address, contact number
+                    case 1://Display info(title, address, contact number)
                         {
                             Console.Clear();
                             Console.WriteLine("Information about your warehouse:");
                             DisplayInfo(myWarehouse);
-                            break;
+                            break; 
                         }
                     case 2://Update info(for instance, update contact number)
                         {
                             Console.Clear();
                             Console.WriteLine("Enter the number of line that you want to change");
-                            Console.WriteLine("1.Title\n2.Address\n3.Contact number\n4.Number of vacation"); ;
-                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("1.Title\n2.Address\n3.Contact number\n4.Number of vacation");
                             int numOfLine = TrySetNumber();
-                            Console.ResetColor();
                             UpdateWarehouseInfo(myWarehouse, numOfLine);
+                            FileSystemStore.SaveData(path, myWarehouse);
                             break;
                         }
                     case 3://Clear all info about Warehouse(re - create Warehouse)
                         {
                             Console.Clear();
                             warehouseServices.CleareInfo(ref myWarehouse);
+                            FileSystemStore.SaveData(path, myWarehouse);
                             break;
                         }
                     case 4://Display info about free vacancies
@@ -78,34 +78,32 @@ namespace WarehouseApp
                             Console.Clear();
                             Console.WriteLine("1. Add new employees\n2. Add new employee by cloning");
                             Console.WriteLine("Select your choise: ");
-                            Console.ForegroundColor = ConsoleColor.Green;
                             int op = TrySetNumber();
-                            Console.ResetColor();                            
                             switch (op)
                             {
                                 case 1:
                                     {
                                         Console.Clear();
                                         Console.WriteLine("How many employees do you want to add?");
-                                        Console.ForegroundColor = ConsoleColor.Green;
                                         int numOfEmployees = TrySetNumber();
-                                        Console.ResetColor();
                                         AddEmployee(myWarehouse, warehouseServices, numOfEmployees);
                                         AddEmployeeInfo(myWarehouse, numOfEmployees);
+                                        FileSystemStore.SaveData(path, myWarehouse);
                                         break;
                                     }
                                 case 2:
                                     {
                                         if (myWarehouse.Employees.Length > 0)
                                         {
-                                        Console.Clear();
-                                        Console.WriteLine("List of employees:");
-                                        DisplayEmployeeList(myWarehouse);
-                                        AddEmployee(myWarehouse, warehouseServices, 1);
-                                        AddEmployeeByClone(myWarehouse);
-                                        PersonFieldsNames();
-                                        UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length-1]);
-                                        break;
+                                            Console.Clear();
+                                            Console.WriteLine("List of employees:");
+                                            DisplayEmployeeList(myWarehouse);
+                                            AddEmployee(myWarehouse, warehouseServices, 1);
+                                            AddEmployeeByClone(myWarehouse);
+                                            PersonFieldsNames();
+                                            UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length - 1]);
+                                            FileSystemStore.SaveData(path, myWarehouse);
+                                            break;
                                         }
                                         else
                                             Console.WriteLine("You haven't got employee for cloning\n\n\n\n");
@@ -121,16 +119,14 @@ namespace WarehouseApp
                             string searcingName = Console.ReadLine();
                             Console.WriteLine("Enter searcing surname");
                             string searchingSurname = Console.ReadLine();
-                            DisplayEmployeeList((Employee[])warehouseServices.SearchEmployee(myWarehouse, searcingName, searchingSurname));
+                            DisplayEmployeeList((Employee[])warehouseServices.SearchEmployes(myWarehouse, searcingName, searchingSurname));
                             break;
                         }
                     case 8://Update employee info
                         {
                             Console.Clear();
                             Console.WriteLine("Choose how do you want to find employee for updating info:\n 1. By select number of employee from employees list;\n 2. Find by name and surname;");
-                            Console.ForegroundColor = ConsoleColor.Green;
                             int selection = TrySetNumber();
-                            Console.ResetColor();
                             switch (selection)
                             {
                                 case 1://choose in list
@@ -139,9 +135,7 @@ namespace WarehouseApp
                                         Console.WriteLine("List of employees:");
                                         DisplayEmployeeList(myWarehouse);
                                         Console.WriteLine("\nEnter number of employee that you want to change: ");
-                                        Console.ForegroundColor = ConsoleColor.Green;
                                         int searchingString = TrySetNumber();
-                                        Console.ResetColor();
                                         PersonFieldsNames();
                                         for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
                                         {
@@ -160,11 +154,9 @@ namespace WarehouseApp
                                         string searcingName = Console.ReadLine();
                                         Console.WriteLine("Enter searcing surname");
                                         string searchingSurname = Console.ReadLine();
-                                        DisplayEmployeeList((Employee[])warehouseServices.SearchEmployee(myWarehouse, searcingName, searchingSurname));//searching person
+                                        DisplayEmployeeList((Employee[])warehouseServices.SearchEmployes(myWarehouse, searcingName, searchingSurname));//searching person
                                         Console.WriteLine("\nEnter number of employee that you want to change: ");
                                         int searchingString = TrySetNumber();
-                                        Console.ForegroundColor = ConsoleColor.Green;
-                                        Console.ResetColor();
                                         PersonFieldsNames();
                                         for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
                                         {
@@ -180,6 +172,7 @@ namespace WarehouseApp
                                     Console.Clear();
                                     break;
                             }
+                            FileSystemStore.SaveData(path, myWarehouse);
                             break;
                         }
                     case 9://Quit employee(remove)
@@ -187,15 +180,15 @@ namespace WarehouseApp
                             Console.WriteLine("List of employees:");
                             DisplayEmployeeList(myWarehouse);
                             Console.WriteLine("Enter number of employee from Employees list: ");
-                            Console.ForegroundColor = ConsoleColor.Green;
                             int numOfEmployeeForQuit = TrySetNumber();
                             if (numOfEmployeeForQuit == 0)
                             {
                                 break;
                             }
-                            Console.ResetColor();
+                            Console.ForegroundColor = ConsoleColor.Green;
                             warehouseServices.QuitEmployee(myWarehouse, numOfEmployeeForQuit);
                             Console.Clear();
+                            FileSystemStore.SaveData(path, myWarehouse);
                             break;
                         }
                     case 0: //exit
@@ -208,6 +201,7 @@ namespace WarehouseApp
                         break;
                 }//main menu
             }
+            FileSystemStore.SaveData(path, myWarehouse);
             timer.Stop();//todo add after adding stop program in main menu.
             TimeSpan ts = timer.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
@@ -334,7 +328,6 @@ namespace WarehouseApp
                 Console.ResetColor();
                 Console.WriteLine("Select employee's job position:");
                 PrintVacations();
-                Console.ForegroundColor = ConsoleColor.Green;
                 int selection = TrySetNumber();
                 switch (selection)
                 {
@@ -367,7 +360,6 @@ namespace WarehouseApp
                         break;
 
                 }
-                Console.ResetColor();
                 Console.WriteLine("Enter employee's home address");
                 Console.ForegroundColor = ConsoleColor.Green;
                 string homeAddress = Console.ReadLine();
@@ -387,17 +379,15 @@ namespace WarehouseApp
                 }
                 else
                 {
-                    myWarehouse.Employees[myWarehouse.Employees.Length -1- numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);//todo -1
+                    myWarehouse.Employees[myWarehouse.Employees.Length - 1 - numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);//todo -1
                 }
             }
         }
         static void AddEmployeeByClone(Warehouse myWarehouse)
         {
-                Console.WriteLine("Select number of employee that you want to clone:");
-                Console.ForegroundColor = ConsoleColor.Green;
-                int numOfEmployee = TrySetNumber();
-                Console.ResetColor();
-                myWarehouse.Employees[myWarehouse.Employees.Length-1] =(Employee)myWarehouse.Employees[numOfEmployee-1].Clone();//TODO Переопределить метод clone, т.к. у каждого объекта есть свой ID
+            Console.WriteLine("Select number of employee that you want to clone:");
+            int numOfEmployee = TrySetNumber();
+            myWarehouse.Employees[myWarehouse.Employees.Length - 1] = (Employee)myWarehouse.Employees[numOfEmployee - 1].Clone();//TODO Переопределить метод clone, т.к. у каждого объекта есть свой ID
         }
         static void PersonFieldsNames()
         {
@@ -417,9 +407,7 @@ namespace WarehouseApp
             do
             {
                 Console.WriteLine("Enter the number of information that you want to change:");
-                Console.ForegroundColor = ConsoleColor.Green;
                 numOfLineForChanging = TrySetNumber();
-                Console.ResetColor();
                 switch (numOfLineForChanging)
                 {
                     case 1:
@@ -442,9 +430,7 @@ namespace WarehouseApp
                     case 3:
                         {
                             Console.WriteLine("Enter employee's age");
-                            Console.ForegroundColor = ConsoleColor.Green;
                             employee.Age = TrySetNumber();
-                            Console.ResetColor();
                             break;
                         }
                     case 4:
@@ -452,7 +438,6 @@ namespace WarehouseApp
                             Console.ResetColor();
                             Console.WriteLine("Select employee's job position:");
                             PrintVacations();
-                            Console.ForegroundColor = ConsoleColor.Green;
                             int selection = TrySetNumber();
                             switch (selection)
                             {
@@ -484,7 +469,6 @@ namespace WarehouseApp
                                 default:
                                     break;
                             }
-                            Console.ResetColor();
                             break;
                         }
                     case 5:
@@ -537,6 +521,7 @@ namespace WarehouseApp
         }
         static int TrySetNumber()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             int value = 0;
             bool process = true;
             while (process)
@@ -551,6 +536,7 @@ namespace WarehouseApp
                     process = false;
                 }
             }
+            Console.ResetColor();
             return value;
         }
     }
@@ -559,4 +545,3 @@ namespace WarehouseApp
 
 
 
- 
