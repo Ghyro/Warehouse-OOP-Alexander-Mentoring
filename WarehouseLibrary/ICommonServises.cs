@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace WarehouseLibrary
 {
-    class BaseService
+    public interface ICommonServises
     {
-
+        public static void Sort<T>(T[] list) where T : IComparable<T>
+        {
+        }
     }
 }
