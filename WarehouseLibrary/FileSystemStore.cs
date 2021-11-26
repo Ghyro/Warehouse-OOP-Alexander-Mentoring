@@ -12,17 +12,24 @@ namespace WarehouseLibrary
     {
         public static void SaveData(string path, Warehouse warehouse)
         {
+            if (warehouse==null)
+            {
+                warehouse = new Warehouse("","","",0);
+            }
             BinaryFormatter formatter = new BinaryFormatter();
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 formatter.Serialize(fs, warehouse);
             }
-
         }
-        public static void LoadData(string path, ref Warehouse warehouse)//TODO добавить проверку на существования файла (try-catch)
+        public static void LoadData(string path, ref Warehouse warehouse)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            if (!File.Exists(path))
+            {
+                return;
+            }
+            using (FileStream fs = new FileStream(path, FileMode.Open))
             {  
                 Warehouse deserilizeWarehouse = (Warehouse)formatter.Deserialize(fs);
                 warehouse = deserilizeWarehouse;                
