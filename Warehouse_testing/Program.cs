@@ -9,204 +9,245 @@ namespace WarehouseApp
     {
         static void Main(string[] args)
         {
-            var timer = new Stopwatch();
-            timer.Start();
-
-            string path = @"D:\MyLessons\Warehouse-OOP-Alexander-Mentoring\Warehouse_testing\bin\Debug\net5.0\warehouse.dat";
-            
-            Warehouse myWarehouse = new Warehouse("Bag&socks", "Belarus, Minsk, Radujnaya str.", "+375293628848", 5);
-            FileSystemStore.LoadData(path, ref myWarehouse);
-            WarehouseServices warehouseServices = new WarehouseServices();
-            bool isWorking = true;
-            while (isWorking)
+            try
             {
-                Console.WriteLine("Welcom to Warehouse");
-                Console.WriteLine("\n1. Display info(title, address, contact number)");
-                Console.WriteLine("2. Update info(for instance, update contact number)");
-                Console.WriteLine("3. Clear all info about Warehouse(re - create Warehouse)");
-                Console.WriteLine("4. Display info about free vacancies");
-                Console.WriteLine("5. Display the list of Employees");
-                Console.WriteLine("6. Add employee");
-                Console.WriteLine("7. Search the employee by Name and Surname");
-                Console.WriteLine("8. Update employee info");
-                Console.WriteLine("9. Quit employee(remove)");
-                Console.WriteLine("0. Exit");
-                Console.WriteLine();
-                int operation = TrySetNumber();
-                switch (operation) //main menu
+                DateTime dateTime = DateTime.Now;
+                var timer = new Stopwatch();
+                timer.Start();
+                string path = @".\warehouse.dat";
+                Logging.Log("Program is running", LogType.Success);
+                Warehouse myWarehouse = new Warehouse("Default warehouse", "Default address", "Default number", 5);//Default value
+                FileSystemStore.LoadData(path, ref myWarehouse);
+                Logging.Log("Load data", LogType.Success);
+                WarehouseServices warehouseServices = new WarehouseServices();
+                bool isWorking = true;
+                while (isWorking)
                 {
-                    case 1://Display info(title, address, contact number)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Information about your warehouse:");
-                            DisplayInfo(myWarehouse);
-                            break; 
-                        }
-                    case 2://Update info(for instance, update contact number)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Enter the number of line that you want to change");
-                            Console.WriteLine("1.Title\n2.Address\n3.Contact number\n4.Number of vacation");
-                            int numOfLine = TrySetNumber();
-                            UpdateWarehouseInfo(myWarehouse, numOfLine);
-                            FileSystemStore.SaveData(path, myWarehouse);
-                            break;
-                        }
-                    case 3://Clear all info about Warehouse(re - create Warehouse)
-                        {
-                            Console.Clear();
-                            warehouseServices.CleareInfo(ref myWarehouse);
-                            FileSystemStore.SaveData(path, myWarehouse);
-                            break;
-                        }
-                    case 4://Display info about free vacancies
-                        {
-                            Console.Clear();
-                            Console.WriteLine($"Free vacation now: {myWarehouse.Vacations - myWarehouse.Employees.Length}\n");
-                            break;
-                        }
-                    case 5://Display the list of Employees
-                        {
-                            Console.Clear();
-                            Console.WriteLine("List of employees:");
-                            WarehouseServices.QuickSort<Employee>(myWarehouse.Employees);
-                            DisplayEmployeeList(myWarehouse);
-                            break;
-                        }
-                    case 6://add employee
-                        {
-                            Console.Clear();
-                            Console.WriteLine("1. Add new employees\n2. Add new employee by cloning");
-                            Console.WriteLine("Select your choise: ");
-                            int op = TrySetNumber();
-                            switch (op)
+                    Console.WriteLine("Welcom to Warehouse");
+                    Console.WriteLine("\n1. Display warehouse info");
+                    Console.WriteLine("2. Update warehouse info");
+                    Console.WriteLine("3. Clear all info about Warehouse(re - create Warehouse)");
+                    Console.WriteLine("4. Display info about free vacancies");
+                    Console.WriteLine("5. Display the list of Employees");
+                    Console.WriteLine("6. Add employee");
+                    Console.WriteLine("7. Search the employee by Name and Surname");
+                    Console.WriteLine("8. Update employee info");
+                    Console.WriteLine("9. Quit employee(remove)");
+                    Console.WriteLine("0. Exit");
+                    Console.WriteLine();
+                    int operation = TrySetNumber();
+                    switch (operation) //main menu
+                    {
+                        case 1://Display info(title, address, contact number)
                             {
-                                case 1:
+                                Console.Clear();
+                                Console.WriteLine("Information about your warehouse:");
+                                DisplayInfo(myWarehouse);
+                                Logging.Log("Display warehouse info", LogType.Success);
+                                break;
+                            }
+                        case 2://Update info(for instance, update contact number)
+                            {
+                                bool proccessor = true;
+                                while (proccessor)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Enter the number of line that you want to change");
+                                    Console.WriteLine("1.Title\n2.Address\n3.Contact number\n4.Number of vacation\n5.Finish editting");
+                                    int numOfLine = TrySetNumber();
+                                    if (numOfLine > 0 && numOfLine < 5)
+                                        UpdateWarehouseInfo(myWarehouse, numOfLine);
+                                    else
                                     {
-                                        Console.Clear();
-                                        Console.WriteLine("How many employees do you want to add?");
-                                        int numOfEmployees = TrySetNumber();
-                                        AddEmployee(myWarehouse, warehouseServices, numOfEmployees);
-                                        AddEmployeeInfo(myWarehouse, numOfEmployees);
-                                        FileSystemStore.SaveData(path, myWarehouse);
-                                        break;
+                                        proccessor = false;
                                     }
-                                case 2:
-                                    {
-                                        if (myWarehouse.Employees.Length > 0)
+                                }
+                                Logging.Log("Update warehouse info", LogType.Success);
+                                FileSystemStore.SaveData(path, myWarehouse);
+                                Logging.Log("Save data", LogType.Success);
+                                break;
+                            }
+                        case 3://Clear all info about Warehouse(re - create Warehouse)
+                            {
+                                Console.Clear();
+                                warehouseServices.CleareInfo(ref myWarehouse);
+                                FileSystemStore.SaveData(path, myWarehouse);
+                                Logging.Log("Warehouse clean", LogType.Success);
+                                Console.WriteLine("Warehouse clean success!\n");
+                                break;
+                            }
+                        case 4://Display info about free vacancies
+                            {
+                                Console.Clear();
+                                Console.WriteLine($"Free vacation now: {myWarehouse.Vacations - myWarehouse.Employees.Length}\n");
+                                Logging.Log("Display info about free vacancies", LogType.Success);
+                                break;
+                            }
+                        case 5://Display the list of Employees
+                            {
+                                Console.Clear();
+                                Console.WriteLine("List of employees:");
+                                WarehouseServices.QuickSort<Employee>(myWarehouse.Employees);
+                                DisplayEmployeeList(myWarehouse);
+                                Logging.Log("Display the list of Employees", LogType.Success);
+                                break;
+                            }
+                        case 6://add employee
+                            {
+                                Console.Clear();
+                                Console.WriteLine("1. Add new employees\n2. Add new employee by cloning");
+                                Console.WriteLine("Select your choise: ");
+                                int op = TrySetNumber();
+                                switch (op)
+                                {
+                                    case 1:
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("How many employees do you want to add?");
+                                            int numOfEmployees = TrySetNumber();
+                                            AddEmployee(myWarehouse, warehouseServices, numOfEmployees);
+                                            AddEmployeeInfo(myWarehouse, numOfEmployees);
+                                            FileSystemStore.SaveData(path, myWarehouse);
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            if (myWarehouse.Employees.Length > 0)
+                                            {
+                                                Console.Clear();
+                                                Console.WriteLine("List of employees:");
+                                                DisplayEmployeeList(myWarehouse);
+                                                AddEmployee(myWarehouse, warehouseServices, 1);
+                                                AddEmployeeByClone(myWarehouse);
+                                                PersonFieldsNames();
+                                                UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length - 1]);
+                                                FileSystemStore.SaveData(path, myWarehouse);
+                                                break;
+                                            }
+                                            else
+                                                Console.WriteLine("You haven't got employee for cloning\n\n\n\n");
+                                            break;
+                                        }
+                                }
+                                break;
+                            }
+                        case 7://Search the employee by Name and Surname
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Enter searcing name");
+                                string searcingName = Console.ReadLine();
+                                Console.WriteLine("Enter searcing surname");
+                                string searchingSurname = Console.ReadLine();
+                                DisplayEmployeeList((Employee[])warehouseServices.SearchEmployes(myWarehouse, searcingName, searchingSurname));
+                                break;
+                            }
+                        case 8://Update employee info
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Choose how do you want to find employee for updating info:\n 1. By select number of employee from employees list;\n 2. Find by name and surname;");
+                                int selection = TrySetNumber();
+                                switch (selection)
+                                {
+                                    case 1://choose in list
                                         {
                                             Console.Clear();
                                             Console.WriteLine("List of employees:");
                                             DisplayEmployeeList(myWarehouse);
-                                            AddEmployee(myWarehouse, warehouseServices, 1);
-                                            AddEmployeeByClone(myWarehouse);
+                                            Console.WriteLine("\nEnter number of employee that you want to change: ");
+                                            int searchingString = TrySetNumber();
                                             PersonFieldsNames();
-                                            UpdateEmployeeInfo(myWarehouse.Employees[myWarehouse.Employees.Length - 1]);
-                                            FileSystemStore.SaveData(path, myWarehouse);
+                                            for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
+                                            {
+                                                if (myWarehouse.Employees[i].Id == myWarehouse.Employees[searchingString - 1].Id)
+                                                {
+                                                    UpdateEmployeeInfo(myWarehouse.Employees[i]);
+                                                    break;
+                                                }
+                                            }
                                             break;
                                         }
-                                        else
-                                            Console.WriteLine("You haven't got employee for cloning\n\n\n\n");
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                    case 7://Search the employee by Name and Surname
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Enter searcing name");
-                            string searcingName = Console.ReadLine();
-                            Console.WriteLine("Enter searcing surname");
-                            string searchingSurname = Console.ReadLine();
-                            DisplayEmployeeList((Employee[])warehouseServices.SearchEmployes(myWarehouse, searcingName, searchingSurname));
-                            break;
-                        }
-                    case 8://Update employee info
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Choose how do you want to find employee for updating info:\n 1. By select number of employee from employees list;\n 2. Find by name and surname;");
-                            int selection = TrySetNumber();
-                            switch (selection)
-                            {
-                                case 1://choose in list
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("List of employees:");
-                                        DisplayEmployeeList(myWarehouse);
-                                        Console.WriteLine("\nEnter number of employee that you want to change: ");
-                                        int searchingString = TrySetNumber();
-                                        PersonFieldsNames();
-                                        for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
+                                    case 2://find by name and surname
                                         {
-                                            if (myWarehouse.Employees[i].Id == myWarehouse.Employees[searchingString - 1].Id)
+                                            Console.Clear();
+                                            Console.WriteLine("Enter searcing name");
+                                            string searcingName = Console.ReadLine();
+                                            Console.WriteLine("Enter searcing surname");
+                                            string searchingSurname = Console.ReadLine();
+                                            DisplayEmployeeList((Employee[])warehouseServices.SearchEmployes(myWarehouse, searcingName, searchingSurname));//searching person
+                                            Console.WriteLine("\nEnter number of employee that you want to change: ");
+                                            int searchingString = TrySetNumber();
+                                            PersonFieldsNames();
+                                            for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
                                             {
-                                                UpdateEmployeeInfo(myWarehouse.Employees[i]);
-                                                break;
+                                                if (myWarehouse.Employees[i].Id == myWarehouse.Employees[searchingString].Id)
+                                                {
+                                                    UpdateEmployeeInfo(myWarehouse.Employees[i]);
+                                                    break;
+                                                }
                                             }
+                                            break;
                                         }
-                                        break;
-                                    }
-                                case 2://find by name and surname
-                                    {
+                                    default:
                                         Console.Clear();
-                                        Console.WriteLine("Enter searcing name");
-                                        string searcingName = Console.ReadLine();
-                                        Console.WriteLine("Enter searcing surname");
-                                        string searchingSurname = Console.ReadLine();
-                                        DisplayEmployeeList((Employee[])warehouseServices.SearchEmployes(myWarehouse, searcingName, searchingSurname));//searching person
-                                        Console.WriteLine("\nEnter number of employee that you want to change: ");
-                                        int searchingString = TrySetNumber();
-                                        PersonFieldsNames();
-                                        for (int i = 0; i < myWarehouse.Employees.Length; i++)//можно улучшить использовав не линейный поиск
-                                        {
-                                            if (myWarehouse.Employees[i].Id == myWarehouse.Employees[searchingString].Id)
-                                            {
-                                                UpdateEmployeeInfo(myWarehouse.Employees[i]);
-                                                break;
-                                            }
-                                        }
                                         break;
-                                    }
-                                default:
-                                    Console.Clear();
-                                    break;
-                            }
-                            FileSystemStore.SaveData(path, myWarehouse);
-                            break;
-                        }
-                    case 9://Quit employee(remove)
-                        {
-                            Console.WriteLine("List of employees:");
-                            DisplayEmployeeList(myWarehouse);
-                            Console.WriteLine("Enter number of employee from Employees list: ");
-                            int numOfEmployeeForQuit = TrySetNumber();
-                            if (numOfEmployeeForQuit == 0)
-                            {
+                                }
+                                FileSystemStore.SaveData(path, myWarehouse);
                                 break;
                             }
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            warehouseServices.QuitEmployee(myWarehouse, numOfEmployeeForQuit);
-                            Console.Clear();
-                            FileSystemStore.SaveData(path, myWarehouse);
+                        case 9://Quit employee(remove)
+                            {
+                                Console.WriteLine("List of employees:");
+                                DisplayEmployeeList(myWarehouse);
+                                Console.WriteLine("Enter number of employee from Employees list: ");
+                                int numOfEmployeeForQuit = TrySetNumber();
+                                if (numOfEmployeeForQuit == 0)
+                                {
+                                    break;
+                                }
+                                warehouseServices.QuitEmployee(myWarehouse, numOfEmployeeForQuit);
+                                Console.Clear();
+                                FileSystemStore.SaveData(path, myWarehouse);
+                                break;
+                            }
+                        case 0: //exit
+                            {
+                                isWorking = false;
+                                break;
+                            }
+                        default://excaption
+                            Console.WriteLine("Wrong selection!");
                             break;
-                        }
-                    case 0: //exit
-                        {
-                            isWorking = false;
-                            break;
-                        }
-                    default://excaption
-                        Console.WriteLine("Wrong selection!");
-                        break;
-                }//main menu
+                    }//main menu
+                }
+                FileSystemStore.SaveData(path, myWarehouse);
+                Logging.Log("Program is closing", LogType.Success);
+                timer.Stop();
+                TimeSpan ts = timer.Elapsed;
+                string elapsedTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
+                Console.WriteLine("RunTime " + elapsedTime);
             }
-            FileSystemStore.SaveData(path, myWarehouse);
-            timer.Stop();//todo add after adding stop program in main menu.
-            TimeSpan ts = timer.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
-            Console.WriteLine("RunTime " + elapsedTime);
+            catch (IndexOutOfRangeException ex)
+            {
+                Logging.Log($"{ex}", LogType.Error);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Logging.Log($"{ex}", LogType.Error);
+            }
+            catch (ArgumentNullException ex)
+            {
+                Logging.Log($"{ex}", LogType.Error);
+            }
+            catch (NullReferenceException ex)
+            {
+                Logging.Log($"{ex}", LogType.Error);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log($"{ex}", LogType.Error);
+            }
         }
+
         static void DisplayEmployeeList(Warehouse myWarehouse)
         {
             if (myWarehouse.Employees.Length + 1 > 0)
@@ -242,15 +283,26 @@ namespace WarehouseApp
         }
         static void DisplayInfo(Warehouse myWarehouse)
         {
-            Console.WriteLine(myWarehouse.Title);
-            Console.WriteLine(myWarehouse.Address);
-            Console.WriteLine(myWarehouse.ContactNumber);
-            Console.WriteLine($"number of employees: {myWarehouse.Employees.Length}");
-            Console.WriteLine($"number of free vacation: {myWarehouse.Vacations - myWarehouse.Employees.Length}");
-            Console.WriteLine();
+            if (myWarehouse != null)
+            {
+                Console.WriteLine(myWarehouse.Title);
+                Console.WriteLine(myWarehouse.Address);
+                Console.WriteLine(myWarehouse.ContactNumber);
+                Console.WriteLine($"number of employees: {myWarehouse.Employees.Length}");
+                Console.WriteLine($"number of free vacation: {myWarehouse.Vacations - myWarehouse.Employees.Length}");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("No info about warehouse. For fisrt select warehouse info\n");
+            }
         }//Display info about warehouse
         static Warehouse UpdateWarehouseInfo(Warehouse myWarehouse, int lineForChanging)
         {
+            if (myWarehouse == null)
+            {
+                myWarehouse = new Warehouse("", "", "", 0);
+            }
             switch (lineForChanging)
             {
                 case 1:
@@ -295,17 +347,29 @@ namespace WarehouseApp
             }
             return myWarehouse;
         }//Update info in selected field of warehouse
-        static void AddEmployee(Warehouse myWarehouse, IWarehouseServices warehouseServicses, int numOfEmployees)//баг если вводишь не число
+        static void AddEmployee(Warehouse myWarehouse, IWarehouseServices warehouseServicses, int numOfEmployees)
         {
-            if ((myWarehouse.Vacations - myWarehouse.Employees.Length) >= numOfEmployees)
+            try
             {
-                warehouseServicses.AddEmployee(myWarehouse, numOfEmployees);
-                Console.WriteLine("Operation being completed and objects are added.\n");
+                if ((myWarehouse.Vacations - myWarehouse.Employees.Length) >= numOfEmployees)
+                {
+                    warehouseServicses.AddEmployee(myWarehouse, numOfEmployees);
+                    Console.WriteLine("Operation being completed and objects are added.\n");
+                    for (int i = myWarehouse.Employees.Length; i > myWarehouse.Employees.Length - numOfEmployees; i--)
+                    {
+                        Logging.Log($"Employee with ID:{myWarehouse.Employees[i-1].Id} was created", LogType.Success);
+                    }
+                }
             }
-            else
+            catch (NullReferenceException ex)
+            {
+                Logging.Log(ex.Message, LogType.Error);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Operation cannot be performed.");
                 Console.WriteLine($"available free vacation: {myWarehouse.Vacations - myWarehouse.Employees.Length}\n");
+                Logging.Log($"{ex}", LogType.Error);
             }
         }
         static void AddEmployeeInfo(Warehouse myWarehouse, int numOfEmployees)
@@ -322,8 +386,12 @@ namespace WarehouseApp
                 string surname = Console.ReadLine();
                 Console.ResetColor();
                 Console.WriteLine("Enter employee's age");
-                Console.ForegroundColor = ConsoleColor.Green;
                 int age = TrySetNumber();
+                while (age < 18)
+                {
+                    Console.WriteLine("Employee age must be more than 17");
+                    age = TrySetNumber();
+                }
                 EnumVacation job = 0;
                 Console.ResetColor();
                 Console.WriteLine("Select employee's job position:");
@@ -358,7 +426,6 @@ namespace WarehouseApp
                         }
                     default:
                         break;
-
                 }
                 Console.WriteLine("Enter employee's home address");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -373,14 +440,13 @@ namespace WarehouseApp
                 string education = Console.ReadLine();
                 Console.ResetColor();
                 Console.Clear();
-                if (myWarehouse.Employees[i] == null)
-                {
-                    myWarehouse.Employees[i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);
-                }
-                else
-                {
-                    myWarehouse.Employees[myWarehouse.Employees.Length - 1 - numOfEmployees + i] = new Employee(name, surname, age, job, homeAddress, contactNumber, education);//todo -1
-                }
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Name = name;
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Surname = surname;
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Age = age;
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Job = job;
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].HomeAddress = homeAddress;
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].ContactNumber = contactNumber;
+                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Education = education;
             }
         }
         static void AddEmployeeByClone(Warehouse myWarehouse)
@@ -388,6 +454,7 @@ namespace WarehouseApp
             Console.WriteLine("Select number of employee that you want to clone:");
             int numOfEmployee = TrySetNumber();
             myWarehouse.Employees[myWarehouse.Employees.Length - 1] = (Employee)myWarehouse.Employees[numOfEmployee - 1].Clone();//TODO Переопределить метод clone, т.к. у каждого объекта есть свой ID
+            Console.Clear();
         }
         static void PersonFieldsNames()
         {

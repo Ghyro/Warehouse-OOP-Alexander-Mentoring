@@ -36,7 +36,7 @@ namespace WarehouseLibrary.Tests
 
             Warehouse warehouseExpected = new Warehouse("MyCompany", "Minsk, Radujnaya str.", "375293628848", 5);
             warehouseExpected.Employees = new Employee[4];
-            warehouseExpected.Employees[0] = new Employee("Max", "", 23, EnumVacation.Director, "", "", "");
+            warehouseExpected.Employees[0] = new Employee("Max", "", 23, EnumVacation.Manager, "", "", "");
             warehouseExpected.Employees[1] = new Employee("Andrei", "", 26, EnumVacation.Manager, "", "", "");
             warehouseExpected.Employees[2] = new Employee("Nastya", "", 28, EnumVacation.Accountant, "", "", "");
             warehouseExpected.Employees[3] = new Employee("Alex", "", 30, EnumVacation.Director, "", "", "");

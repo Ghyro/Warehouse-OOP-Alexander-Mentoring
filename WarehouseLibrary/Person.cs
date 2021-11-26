@@ -76,6 +76,9 @@ namespace WarehouseLibrary
             Education = education;
             id = Guid.NewGuid();
         }
-        public Person() { }
+        public Person()
+        {
+            id = Guid.NewGuid();
+        }
     }
 }
