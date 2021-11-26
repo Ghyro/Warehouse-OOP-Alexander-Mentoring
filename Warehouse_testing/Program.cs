@@ -357,7 +357,7 @@ namespace WarehouseApp
                     Console.WriteLine("Operation being completed and objects are added.\n");
                     for (int i = myWarehouse.Employees.Length; i > myWarehouse.Employees.Length - numOfEmployees; i--)
                     {
-                        Logging.Log($"Employee with ID:{myWarehouse.Employees[i-1].Id} was created", LogType.Success);
+                        Logging.Log($"Employee with ID:{myWarehouse.Employees[i - 1].Id} was created", LogType.Success);
                     }
                 }
             }
@@ -440,13 +440,13 @@ namespace WarehouseApp
                 string education = Console.ReadLine();
                 Console.ResetColor();
                 Console.Clear();
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Name = name;
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Surname = surname;
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Age = age;
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Job = job;
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].HomeAddress = homeAddress;
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].ContactNumber = contactNumber;
-                myWarehouse.Employees[myWarehouse.Employees.Length  - numOfEmployees + i].Education = education;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].Name = name;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].Surname = surname;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].Age = age;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].Job = job;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].HomeAddress = homeAddress;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].ContactNumber = contactNumber;
+                myWarehouse.Employees[myWarehouse.Employees.Length - numOfEmployees + i].Education = education;
             }
         }
         static void AddEmployeeByClone(Warehouse myWarehouse)

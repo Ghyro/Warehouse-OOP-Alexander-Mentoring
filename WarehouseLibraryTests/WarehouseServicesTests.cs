@@ -11,7 +11,7 @@ namespace WarehouseLibrary.Tests
 
     [TestClass()]
     public class WarehouseServicesTests
-    {    
+    {
         [TestMethod()]
         public void Sort_DigitsWithoutRepit()
         {
