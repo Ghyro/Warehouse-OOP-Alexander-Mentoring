@@ -15,6 +15,10 @@ namespace WarehouseLibrary
             get { return job; }
             set { job = value; }
         }
+        public Employee() : base() 
+        {
+
+        }
         public Employee(string name, string surname, int age, EnumVacation job, string homeAddress, string contactNumber, string education) : base(name, surname, age, homeAddress, contactNumber, education)
         {
             Job = job;
@@ -25,15 +29,8 @@ namespace WarehouseLibrary
         }
         public object Clone()
         {
-            return new Employee(
-                Name = this.Name,
-                Surname = this.Surname,
-                Age = this.Age,
-                Job = this.Job,
-                HomeAddress = this.HomeAddress,
-                ContactNumber = this.ContactNumber,
-                Education = this.Education
-            );
+            return this.MemberwiseClone();
+            //return new Employee(Name = this.Name,Surname = this.Surname,Age = this.Age,Job = this.Job,HomeAddress = this.HomeAddress,ContactNumber = this.ContactNumber,Education = this.Education);
         }
 
         public override bool Equals(object obj)
