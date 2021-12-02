@@ -8,27 +8,26 @@ namespace WarehouseLibrary
 {
     public class WarehouseServices : IWarehouseServices, ICommonServises
     {
-
         public static void QuickSort<T>(T[] list) where T : IComparable<T>
         {
             QuickSortInternal(list, 0, list.Length - 1);
         }
-        private static void QuickSortInternal<T>(T[] list, int left, int right) where T : IComparable<T>
+        private static void QuickSortInternal<T>(T[] list, int minIndex, int maxIndex) where T : IComparable<T>
         {
-            if (left >= right)
+            if (minIndex >= maxIndex)
             {
                 return;
             }
-            int pivot = PivotInternal(list, left, right);
-            QuickSortInternal(list, left, pivot - 1);
-            QuickSortInternal(list, pivot + 1, right);
+            int pivot = GetPivotIndex(list, minIndex, maxIndex);
+            QuickSortInternal(list, minIndex, pivot - 1);
+            QuickSortInternal(list, pivot + 1, maxIndex);
         }
-        private static int PivotInternal<T>(T[] list, int left, int right) where T : IComparable<T>
+        private static int GetPivotIndex<T>(T[] list, int minIndex, int maxIndex) where T : IComparable<T>
         {
-            T pivot = list[right];
+            T pivot = list[maxIndex];
             // stack items smaller than partition from left to right
-            int WallIndex = left;
-            for (int i = left; i < right; i++)
+            int WallIndex = minIndex;
+            for (int i = minIndex; i < maxIndex; i++)
             {
                 T item = list[i];
                 if (item.CompareTo(pivot) <= 0)
@@ -40,12 +39,11 @@ namespace WarehouseLibrary
                 }
             }
             // put the wall after all the smaller items
-            list[right] = list[WallIndex];
+            list[maxIndex] = list[WallIndex];
             list[WallIndex] = pivot;
 
-            return right;
+            return WallIndex;
         }
-
 
         public void CleareInfo(ref Warehouse myWarehouse)
         {
@@ -57,6 +55,10 @@ namespace WarehouseLibrary
             for (int i = 0; i < myWarehouse.Employees.Length; i++)
             {
                 employees[i] = myWarehouse.Employees[i];
+            }
+            for (int i = myWarehouse.Employees.Length; i < employees.Length; i++)
+            {
+                employees[i] = new Employee();
             }
             myWarehouse.Employees = (Employee[])employees;
         }
@@ -80,7 +82,7 @@ namespace WarehouseLibrary
                 Console.WriteLine("Number of employeed person is 0");
             }
         }
-        public Person[] SearchEmployee(Warehouse myWarehouse, string searchingName, string searchingSurname)
+        public Person[] SearchEmployes(Warehouse myWarehouse, string searchingName, string searchingSurname)
         {
             Person[] resultList = new Employee[0];
             int counter = 0;
